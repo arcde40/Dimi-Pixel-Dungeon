@@ -120,6 +120,7 @@
   <ItemGroup>
     <ClCompile Include="arraylist.c" />
     <ClCompile Include="InputHandler.c" />
+    <ClCompile Include="lighting.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="map.c" />
     <ClCompile Include="pathfinding.c" />

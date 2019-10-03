@@ -15,6 +15,16 @@
 #define CORRIDOR_GENERATE_TRIES 40
 #define EXIT_GENERATE_TRIES 100
 
+#define MAP_Y_SIZE MIN_Y+MAX_Y
+
+#define MAP_X_START 4
+#define MAP_X_END 45
+#define MAP_Y_START 6
+#define MAP_Y_END 129
+
+// COLOR
+
+
 // Other
 
 #define MAX_FRAME 50

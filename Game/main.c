@@ -25,6 +25,8 @@ int main() {
 	int playerX = getStartPos().X, playerY = getStartPos().Y;
 	init_();
 	char defaultBuffer[49][189] = { 0, };
+	WORD colorMap[49][189] = { 0, };
+	bool visitMap[MAX_X + MIN_X][MAX_Y + MIN_Y] = { 0, };
 	defaultLayout(defaultBuffer);
 	for (int i = 0; i < 49; i++) {
 		fprintf(stdout, "%s\n",defaultBuffer[i]);

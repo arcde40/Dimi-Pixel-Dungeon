@@ -25,6 +25,9 @@
     <Filter Include="헤더 파일\Room">
       <UniqueIdentifier>{4b0d6398-0fb8-4331-aa19-55e97f3371b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Render">
+      <UniqueIdentifier>{07e139db-7e9b-440f-8a48-bc512fb86903}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -52,7 +55,10 @@
       <Filter>소스 파일\Room</Filter>
     </ClCompile>
     <ClCompile Include="render.c">
-      <Filter>소스 파일\Util</Filter>
+      <Filter>소스 파일\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="lighting.c">
+      <Filter>소스 파일\Render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
