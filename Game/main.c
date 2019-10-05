@@ -6,6 +6,7 @@
 #include "struct.h"
 #include "pathfining.h"
 #include "InputHandler.h"
+#include "lighting.h"
 #include <time.h>
 #include <Windows.h>
 
@@ -61,12 +62,13 @@ int main() {
 		fflush(stdout);
 		
 		defaultLayout(defaultBuffer);
+		defaultLighting(colorMap);
 		gotoxy(0, 0);
 		updateMap(playerX, playerY, 20, 60, map, 4, 45, 6, 129, defaultBuffer);
-		
+		mapLighting(playerX, playerY, 5, colorMap, map, visitMap);
 		//Sleep(100);
 		for (int i = 0; i < 49; i++) {
-			fprintf(stdout, "%s", defaultBuffer[i]);
+			fprintf(stdout, "%s", applyColor(colorMap[i], defaultBuffer[i]));
 			if (i != 48) fprintf(stdout, "\n");
 		}
 		

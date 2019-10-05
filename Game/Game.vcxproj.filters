@@ -28,6 +28,9 @@
     <Filter Include="소스 파일\Render">
       <UniqueIdentifier>{07e139db-7e9b-440f-8a48-bc512fb86903}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\Render">
+      <UniqueIdentifier>{5e28a01c-f03a-4be0-aec6-a57b16f8bd31}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -83,14 +86,17 @@
     <ClInclude Include="pointarraylist.h">
       <Filter>헤더 파일\Util</Filter>
     </ClInclude>
-    <ClInclude Include="render.h">
-      <Filter>헤더 파일\Util</Filter>
-    </ClInclude>
     <ClInclude Include="room.h">
       <Filter>헤더 파일\Room</Filter>
     </ClInclude>
     <ClInclude Include="roomarraylist.h">
       <Filter>헤더 파일\Room</Filter>
+    </ClInclude>
+    <ClInclude Include="render.h">
+      <Filter>헤더 파일\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="lighting.h">
+      <Filter>헤더 파일\Render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
