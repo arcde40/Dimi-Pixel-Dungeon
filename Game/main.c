@@ -62,10 +62,10 @@ int main() {
 		fflush(stdout);
 		
 		defaultLayout(defaultBuffer);
-		defaultLighting(colorMap);
 		gotoxy(0, 0);
 		updateMap(playerX, playerY, 20, 60, map, 4, 45, 6, 129, defaultBuffer);
-		mapLighting(playerX, playerY, 5, colorMap, map, visitMap);
+		mapLighting1(playerX, playerY, 15, colorMap, map, visitMap);
+		defaultLighting(colorMap);
 		//Sleep(100);
 		for (int i = 0; i < 49; i++) {
 			fprintf(stdout, "%s", applyColor(colorMap[i], defaultBuffer[i]));

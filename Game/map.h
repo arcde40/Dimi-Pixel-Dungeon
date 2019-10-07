@@ -11,5 +11,6 @@
 
 void draw(int map[][MIN_Y+MAX_Y], RoomArrayList* arr);
 bool isPassable(int i);
+bool isTransparent(int tile);
 COORD getStartPos();
 COORD getEndPos();

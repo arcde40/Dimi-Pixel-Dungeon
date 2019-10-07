@@ -119,6 +119,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="arraylist.c" />
+    <ClCompile Include="Graph.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="InputHandler.c" />
     <ClCompile Include="lighting.c" />
     <ClCompile Include="main.c" />
