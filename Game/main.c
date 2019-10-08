@@ -53,22 +53,25 @@ int main() {
 	// 마우스 활성화
 	GetConsoleMode(CIN, &mode);
 	SetConsoleMode(CIN, mode | ENABLE_MOUSE_INPUT);
-	
+	char coloredBuffer[189 * 5] = { 0, };
 	while (1) {
-		
+
 		Sleep(MAX_FRAME);
 		//ClearScreen();
 		//system("cls");
 		fflush(stdout);
-		
+
 		defaultLayout(defaultBuffer);
 		gotoxy(0, 0);
 		updateMap(playerX, playerY, 20, 60, map, 4, 45, 6, 129, defaultBuffer);
-		mapLighting1(playerX, playerY, 15, colorMap, map, visitMap);
 		defaultLighting(colorMap);
+		mapLighting1(playerX, playerY, 50, colorMap, map, visitMap);
+		
+		
 		//Sleep(100);
 		for (int i = 0; i < 49; i++) {
-			fprintf(stdout, "%s", applyColor(colorMap[i], defaultBuffer[i]));
+			applyColor(colorMap[i], defaultBuffer[i], coloredBuffer);
+			fprintf(stdout, "%s", coloredBuffer);
 			if (i != 48) fprintf(stdout, "\n");
 		}
 		

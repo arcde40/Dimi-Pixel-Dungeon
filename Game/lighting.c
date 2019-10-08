@@ -3,7 +3,7 @@
 void defaultLighting(WORD colorMap[][189]) {
 	for (int i = 0; i < 49; i++) {
 		for (int j = 0; j < 189; j++) {
-			if(colorMap[i][j] == 0) colorMap[i][j] = COLOR_BRIGHT_WHITE;
+			colorMap[i][j] = COLOR_BRIGHT_WHITE;
 		}
 	}
 }
@@ -27,9 +27,9 @@ void mapLighting(int playerX, int playerY, int renderRange, WORD colorMap[][189]
 	}
 }
 
-char* applyColor(WORD* colorMap, char* buffer) {
+void applyColor(WORD* colorMap, char* buffer, char* appliedBuffer) {
+	for (int i = 0; i < 189 * 5; i++) appliedBuffer[i] = 0;
 	int prev = -1, scope = 0;
-	char appliedBuffer[189 * 5] = { 0, };
 	for (int i = 0; i < 189; i++) {
 		if (prev != colorMap[i]) {
 			prev = colorMap[i];
@@ -44,8 +44,6 @@ char* applyColor(WORD* colorMap, char* buffer) {
 			appliedBuffer[scope++] = buffer[i];
 		}
 	}
-
-	return appliedBuffer;
 }
 
 /* 라이팅 기법
@@ -66,13 +64,15 @@ char* applyColor(WORD* colorMap, char* buffer) {
 */
 
 void mapLighting1(int playerX, int playerY, int renderRange, WORD colorMap[][189], int map[][MAX_Y+MIN_Y], bool visitMap[][MAX_Y + MIN_Y]) {
+	defaultLighting(colorMap);
 	drawCircle(renderRange, playerX, playerY, colorMap, map, visitMap);
 	for (int i = MAP_X_START; i < MAP_X_END; i++) {
-		for (int j = MAP_Y_START; j < MAP_Y_END - 1; j++) {
-			if (colorMap[i][j] != COLOR_BRIGHT_WHITE) {
+		for (int j = MAP_Y_START; j < MAP_Y_END; j++) {
+			if ( colorMap[i][j] != COLOR_CHECKED){// colorMap[i][j] != COLOR_BRIGHT_RED && colorMap[i][j] != COLOR_BRIGHT_BLUE && colorMap[i][j] != COLOR_BRIGHT_YELLOW && colorMap[i][j] != COLOR_BRIGHT_GREEN) {
 				if (visitMap[playerX + i - 25][playerY + j - 66]) colorMap[i][j] = COLOR_BRIGHT_BLACK;
 				else colorMap[i][j] = COLOR_BLACK;
 			}
+			else colorMap[i][j] -= 1;
 		}
 	}
 }
@@ -88,15 +88,13 @@ void plotLine(int x1, int y1, int x2, int y2, WORD colorMap[][189], int map[][MA
 		int D = 2 * dy - dx;
 		int y = y1;
 		if (x2 - x1 < 0) {
-			for (int x = x1; x > x2; x--) {
+			for (int x = x1; x > x2; x--) { 
 				// Process Start
 				if (x < 0 || y < 0 || x > MAX_X + MIN_X || y > MAX_Y + MIN_Y) return;
 				//if (x - playerX < MAP_X_START - 25 || x - playerX > MAP_X_END + 25 || y - playerY < MAP_Y_START - 66 || y - playerY > MAP_Y_END + 66) return;
 				visitMap[x][y] = true;
-				if (isTransparent(map[x][y])) {
-					colorMap[x-playerX+25][y-playerY+66] = COLOR_BRIGHT_WHITE;
-				}
-				else return;
+				colorMap[x - playerX + 25][y - playerY + 66] = COLOR_CHECKED; //COLOR_BRIGHT_YELLOW;
+				if (!isTransparent(map[x][y])) return;
 				// Process End
 				if (D > 0) {
 					y -= yi;
@@ -111,10 +109,8 @@ void plotLine(int x1, int y1, int x2, int y2, WORD colorMap[][189], int map[][MA
 				if (x < 0 || y < 0 || x > MAX_X + MIN_X || y > MAX_Y + MIN_Y) return;
 				//if (x - playerX < MAP_X_START - 25 || x - playerX > MAP_X_END + 25 || y - playerY < MAP_Y_START - 66 || y - playerY > MAP_Y_END + 66) return;
 				visitMap[x][y] = true;
-				if (isTransparent(map[x][y])) {
-					colorMap[x - playerX + 25][y - playerY + 66] = COLOR_BRIGHT_WHITE;
-				}
-				else return;
+				colorMap[x - playerX + 25][y - playerY + 66] = COLOR_CHECKED; //COLOR_BRIGHT_GREEN;
+				if (!isTransparent(map[x][y])) return;
 				// Process End
 				if (D > 0) {
 					y += yi;
@@ -127,7 +123,7 @@ void plotLine(int x1, int y1, int x2, int y2, WORD colorMap[][189], int map[][MA
 	else {
 		// Drawing ( M < -1  or M > 1 ) Line
 		int dx = ABS(x2 - x1);
-		int dy = y2 - y1;
+		int dy = ABS(y2 - y1);
 
 		int xi = (x2 - x1 > 0) ? 1 : -1;
 
@@ -140,10 +136,8 @@ void plotLine(int x1, int y1, int x2, int y2, WORD colorMap[][189], int map[][MA
 				if (x < 0 || y < 0 || x > MAX_X + MIN_X || y > MAX_Y + MIN_Y) return;
 				//if (x - playerX < MAP_X_START - 25 || x - playerX > MAP_X_END + 25 || y - playerY < MAP_Y_START - 66 || y - playerY > MAP_Y_END + 66) return;
 				visitMap[x][y] = true;
-				if (isTransparent(map[x][y])) {
-					colorMap[x - playerX + 25][y - playerY + 66] = COLOR_BRIGHT_WHITE;
-				}
-				else return;
+				colorMap[x - playerX + 25][y - playerY + 66] = COLOR_CHECKED; //COLOR_BRIGHT_RED;
+				if (!isTransparent(map[x][y])) return;
 				// Process End
 				if (D > 0) {
 					x -= xi;
@@ -159,10 +153,9 @@ void plotLine(int x1, int y1, int x2, int y2, WORD colorMap[][189], int map[][MA
 				if (x < 0 || y < 0 || x > MAX_X + MIN_X || y > MAX_Y + MIN_Y) return;
 				//if (x - playerX < MAP_X_START - 25 || x - playerX > MAP_X_END + 25 || y - playerY < MAP_Y_START - 66 || y - playerY > MAP_Y_END + 66) return;
 				visitMap[x][y] = true;
-				if (isTransparent(map[x][y])) {
-					colorMap[x - playerX + 25][y - playerY + 66] = COLOR_BRIGHT_WHITE;
-				}
-				else return;
+				colorMap[x - playerX + 25][y - playerY + 66] = COLOR_CHECKED; //COLOR_BRIGHT_BLUE;
+				
+				if(!isTransparent(map[x][y])) return;
 				// Process End
 				if (D > 0) {
 					x += xi;
@@ -209,10 +202,10 @@ void drawCircle(int R, int playerX, int playerY, WORD colorMap[][189], int map[]
 		plotLine(playerX, playerY, playerX - x, playerY + y, colorMap, map, playerX, playerY, visitMap);
 		plotLine(playerX, playerY, playerX + x, playerY - y, colorMap, map, playerX, playerY, visitMap);
 		plotLine(playerX, playerY, playerX - x, playerY - y, colorMap, map, playerX, playerY, visitMap);
-		plotLine(playerX, playerY, playerY + y, playerX + x, colorMap, map, playerX, playerY, visitMap);
-		plotLine(playerX, playerY, playerY + y, playerX - x, colorMap, map, playerX, playerY, visitMap);
-		plotLine(playerX, playerY, playerY - y, playerX + x, colorMap, map, playerX, playerY, visitMap);
-		plotLine(playerX, playerY, playerY - y, playerX - x, colorMap, map, playerX, playerY, visitMap);
+		plotLine(playerX, playerY, playerX + y, playerY + x, colorMap, map, playerX, playerY, visitMap);
+		plotLine(playerX, playerY, playerX + y, playerY - x, colorMap, map, playerX, playerY, visitMap);
+		plotLine(playerX, playerY, playerX - y, playerY + x, colorMap, map, playerX, playerY, visitMap);
+		plotLine(playerX, playerY, playerX - y, playerY - x, colorMap, map, playerX, playerY, visitMap);
 	}
 }
 

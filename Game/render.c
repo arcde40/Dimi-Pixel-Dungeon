@@ -78,7 +78,7 @@ char getPrintChar(int i) {
 	case 0: return ' ';
 	case 1: return 'W'; 
 	case 2: return '.';
-	case 3: return '.'; 
+	case 3: return '&'; 
 	case 4: return '.'; 
 	case 5: return '.'; 
 	case 11: //c = '¦¦'; break;

@@ -20,7 +20,7 @@
 #define MAP_X_START 4
 #define MAP_X_END 45
 #define MAP_Y_START 6
-#define MAP_Y_END 129
+#define MAP_Y_END 128
 
 // COLOR
 #define COLOR_BLACK 30
@@ -31,6 +31,8 @@
 #define COLOR_MAGENTA 35
 #define COLOR_CYAN 36
 #define COLOR_WHITE 37
+
+#define COLOR_CHECKED 98
 
 #define COLOR_BRIGHT_BLACK 90
 #define COLOR_BRIGHT_RED 91

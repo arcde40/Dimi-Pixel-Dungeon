@@ -198,12 +198,12 @@ void draw(int map[][MIN_Y+MAX_Y], RoomArrayList* arr) {
 }
 
 bool isPassable(int tile) {
-	if (tile == 2 || tile == 4 || tile == 5 || tile == 9 || tile == 11 || tile == 12 || tile == 13 || tile == 14 || tile == 15) return true;
+	if (tile == 2 || tile == 3 || tile == 4 || tile == 5 || tile == 9 || tile == 11 || tile == 12 || tile == 13 || tile == 14 || tile == 15) return true;
 	return false;
 }
 
 bool isTransparent(int tile) {
-	if (tile == 2 || tile == 4 || tile == 5 || tile == 11 || tile == 12 || tile == 13 || tile == 14 || tile == 15 || tile == 21 || tile == 22) return true;
+	if (tile == 2 || tile == 3 || tile == 4 || tile == 5 || tile == 11 || tile == 12 || tile == 13 || tile == 14 || tile == 15 || tile == 21 || tile == 22) return true;
 	return false;
 }
 
