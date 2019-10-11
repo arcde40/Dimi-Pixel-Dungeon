@@ -27,7 +27,7 @@ void mapLighting(int playerX, int playerY, int renderRange, WORD colorMap[][189]
 	}
 }
 
-void applyColor(WORD* colorMap, char* buffer, char* appliedBuffer) {
+void applyColor(WORD* colorMap, wchar_t* buffer, wchar_t* appliedBuffer) {
 	for (int i = 0; i < 189 * 5; i++) appliedBuffer[i] = 0;
 	int prev = -1, scope = 0;
 	for (int i = 0; i < 189; i++) {

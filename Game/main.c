@@ -8,12 +8,14 @@
 #include "InputHandler.h"
 #include "lighting.h"
 #include <time.h>
+#include <locale.h>
 #include <Windows.h>
 
 #include "GlobalVariable.h"
 
 
 int main() {
+	setlocale(LC_ALL, "");
 	srand(time(NULL));
 	int map[MIN_X+MAX_X][MIN_Y+MAX_Y] = { {0,} };
 	RoomArrayList* array = initRoomArray();
@@ -25,12 +27,12 @@ int main() {
 
 	int playerX = getStartPos().X, playerY = getStartPos().Y;
 	init_();
-	char defaultBuffer[49][189] = { 0, };
+	wchar_t defaultBuffer[49][189] = { 0, };
 	WORD colorMap[49][189] = { 0, };
 	bool visitMap[MAX_X + MIN_X][MAX_Y + MIN_Y] = { 0, };
 	defaultLayout(defaultBuffer);
 	for (int i = 0; i < 49; i++) {
-		fprintf(stdout, "%s\n",defaultBuffer[i]);
+		fprintf(stdout, "%ls\n",defaultBuffer[i]);
 	}
 	/*while (1) {
 		Sleep(100);
@@ -53,7 +55,7 @@ int main() {
 	// 마우스 활성화
 	GetConsoleMode(CIN, &mode);
 	SetConsoleMode(CIN, mode | ENABLE_MOUSE_INPUT);
-	char coloredBuffer[189 * 5] = { 0, };
+	wchar_t coloredBuffer[189 * 5] = { 0, };
 	while (1) {
 
 		Sleep(MAX_FRAME);
@@ -65,16 +67,17 @@ int main() {
 		gotoxy(0, 0);
 		updateMap(playerX, playerY, 20, 60, map, 4, 45, 6, 129, defaultBuffer);
 		defaultLighting(colorMap);
-		mapLighting1(playerX, playerY, 50, colorMap, map, visitMap);
+		//mapLighting1(playerX, playerY, 50, colorMap, map, visitMap);
+		generatePopup(POPUP_CENTER, 30, 60, defaultBuffer, colorMap);
 		
 		
 		//Sleep(100);
 		for (int i = 0; i < 49; i++) {
 			applyColor(colorMap[i], defaultBuffer[i], coloredBuffer);
-			fprintf(stdout, "%s", coloredBuffer);
+			fprintf(stdout, "%ls", coloredBuffer);
 			if (i != 48) fprintf(stdout, "\n");
 		}
-		
+		Sleep(10000);
 		// map Range: (4,6) ~ (45, 129)
 
 		if (be_input(CIN))

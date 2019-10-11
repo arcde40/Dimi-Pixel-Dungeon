@@ -16,7 +16,7 @@ void gotoxy(int x, int y) {
 	SetConsoleCursorPosition(consoleHandle, coord);
 }
 
-void defaultLayout(char buffer[][189]) {
+void defaultLayout(wchar_t buffer[][189]) {
 	char temp[49][188] = {
 		"###########################################################################################################################################################################################",
 "#                                                                                                                                                                                         #",
@@ -96,7 +96,7 @@ char getPrintChar(int i) {
 	}
 }
 // (4,6) ~ (45, 129)
-void updateMap(int playerX, int playerY, int renderRangeX, int renderRangeY, int map[][MIN_Y+MAX_Y], int startPosX, int endPosX, int startPosY, int endPosY, char defaultBuffer[49][189]) {
+void updateMap(int playerX, int playerY, int renderRangeX, int renderRangeY, int map[][MIN_Y+MAX_Y], int startPosX, int endPosX, int startPosY, int endPosY, wchar_t defaultBuffer[49][189]) {
 	int minRenderRangeX = playerX - renderRangeX, maxRenderRangeX = playerX + renderRangeX;
 	int minRenderRangeY = playerY - renderRangeY, maxRenderRangeY = playerY + renderRangeY;
 	int bufferPosX = startPosX; int bufferPosY = startPosY;
@@ -143,6 +143,28 @@ void render() {
 	while (1) {
 		Sleep(100);
 	}
+}
+
+void generatePopup(int Type, int height, int width, wchar_t buffer[][189], WORD colorMap[][189]) {
+
+	int offsetX = 0, offsetY = 0;
+	if (Type == POPUP_CENTER) {
+		offsetX = 49 / 2 - height / 2;
+		offsetY = 189 / 2 - width / 2;
+	}
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				if (i == 0 || i == height - 1) {
+					buffer[i+offsetX][j+offsetY] = L'¦¡';
+					colorMap[i+offsetX][j+offsetY] = COLOR_BRIGHT_WHITE;
+				}
+				else if (j == 0 || j == width - 1) {
+					buffer[i+offsetX][j+offsetY] = L'¦¢';
+					colorMap[i+offsetX][j+offsetY] = COLOR_BRIGHT_WHITE;
+				}
+				else colorMap[i+offsetX][j+offsetY] = COLOR_BLACK;
+			}	
+		}
 }
 
 void ClearScreen()

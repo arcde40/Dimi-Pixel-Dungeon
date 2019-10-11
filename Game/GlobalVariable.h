@@ -14,7 +14,6 @@
 #define MAX_Y 130
 #define CORRIDOR_GENERATE_TRIES 40
 #define EXIT_GENERATE_TRIES 100
-
 #define MAP_Y_SIZE MIN_Y+MAX_Y
 
 #define MAP_X_START 4
@@ -46,3 +45,9 @@
 // Other
 
 #define MAX_FRAME 10
+
+// Render
+
+#define POPUP_TOP 0
+#define POPUP_CENTER 1
+#define POPUP_BOTTOM 2
