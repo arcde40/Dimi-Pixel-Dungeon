@@ -1,4 +1,9 @@
 #pragma once
+#include <stdio.h> 
+#include <Windows.h>
+#include "map.h"
+#include "MobList.h"
+#include "MobAI.h"
 
 void init_();
 void gotoxy(int x, int y);

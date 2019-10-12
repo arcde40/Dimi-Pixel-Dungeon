@@ -34,6 +34,12 @@
     <Filter Include="소스 파일\Testing">
       <UniqueIdentifier>{fe7d2f1b-0753-4a46-b2ac-0b4045b121c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\Mob">
+      <UniqueIdentifier>{f2d51705-41ec-4bb3-8852-a1846e38cadf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Mob">
+      <UniqueIdentifier>{71025596-69e7-491b-83ec-ccdd38f5398f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -69,6 +75,12 @@
     <ClCompile Include="Graph.c">
       <Filter>소스 파일\Testing</Filter>
     </ClCompile>
+    <ClCompile Include="MobAI.c">
+      <Filter>소스 파일\Mob</Filter>
+    </ClCompile>
+    <ClCompile Include="MobList.c">
+      <Filter>소스 파일\Mob</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="struct.h">
@@ -103,6 +115,12 @@
     </ClInclude>
     <ClInclude Include="lighting.h">
       <Filter>헤더 파일\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="MobList.h">
+      <Filter>헤더 파일\Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="MobAI.h">
+      <Filter>헤더 파일\Mob</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

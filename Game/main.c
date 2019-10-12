@@ -7,6 +7,8 @@
 #include "pathfining.h"
 #include "InputHandler.h"
 #include "lighting.h"
+#include "MobAI.h"
+#include "MobList.h"
 #include <time.h>
 #include <locale.h>
 #include <Windows.h>
@@ -30,6 +32,7 @@ int main() {
 	wchar_t defaultBuffer[49][189] = { 0, };
 	WORD colorMap[49][189] = { 0, };
 	bool visitMap[MAX_X + MIN_X][MAX_Y + MIN_Y] = { 0, };
+	MobList* mobList = initMobList();
 	defaultLayout(defaultBuffer);
 	for (int i = 0; i < 49; i++) {
 		fprintf(stdout, "%ls\n",defaultBuffer[i]);
@@ -56,6 +59,9 @@ int main() {
 	GetConsoleMode(CIN, &mode);
 	SetConsoleMode(CIN, mode | ENABLE_MOUSE_INPUT);
 	wchar_t coloredBuffer[189 * 5] = { 0, };
+	//MobInfo mobInfo = { L"Å×½ºÆ®¸÷", 0, 1, 50, 50, MOB_BEHAVE_HOSTILE, false, 10, false, NULL, 0};
+
+	//putMobInfo(mobList, &mobInfo);
 	while (1) {
 
 		Sleep(MAX_FRAME);
@@ -67,17 +73,17 @@ int main() {
 		gotoxy(0, 0);
 		updateMap(playerX, playerY, 20, 60, map, 4, 45, 6, 129, defaultBuffer);
 		defaultLighting(colorMap);
-		//mapLighting1(playerX, playerY, 50, colorMap, map, visitMap);
-		generatePopup(POPUP_CENTER, 30, 60, defaultBuffer, colorMap);
+		mapLighting1(playerX, playerY, 50, colorMap, map, visitMap);
+		//generatePopup(POPUP_CENTER, 30, 60, defaultBuffer, colorMap);
 		
 		
 		//Sleep(100);
 		for (int i = 0; i < 49; i++) {
 			applyColor(colorMap[i], defaultBuffer[i], coloredBuffer);
-			fprintf(stdout, "%ls", coloredBuffer);
+			fwprintf(stdout, L"%ls", coloredBuffer);
 			if (i != 48) fprintf(stdout, "\n");
 		}
-		Sleep(10000);
+		
 		// map Range: (4,6) ~ (45, 129)
 
 		if (be_input(CIN))

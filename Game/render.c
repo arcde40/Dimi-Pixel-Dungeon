@@ -1,6 +1,4 @@
-#include <stdio.h> 
-#include <Windows.h>
-#include "map.h"
+#include "render.h"
 // X: 188 Y: 49 √÷¥Î
 
 void init_() {
@@ -111,9 +109,16 @@ void updateMap(int playerX, int playerY, int renderRangeX, int renderRangeY, int
 			else if (x == playerX && y == playerY) defaultBuffer[bufferPosX][bufferPosY++] = '@';
 			else defaultBuffer[bufferPosX][bufferPosY++] = getPrintChar(map[x][y]);
 		}
-		if (bufferPosX == endPosX) return;
+		if (bufferPosX == endPosX) break;
 	}
 	
+	// Display Mob
+	/*for (int i = 0; i < mobList->size; i++) {
+		MobInfo* info = getMobInfo(mobList, i);
+		if (ABS(playerX - info->posX) <= 25 && ABS(playerY - info->posY) <= 66) {
+			defaultBuffer[playerX + info->posX - 25][playerY + info->posY - 66] = 'E';
+		}
+	}*/
 }
 
 

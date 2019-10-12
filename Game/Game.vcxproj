@@ -79,6 +79,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -88,6 +89,9 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
+    <Link>
+      <Profile>true</Profile>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -126,6 +130,8 @@
     <ClCompile Include="lighting.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="map.c" />
+    <ClCompile Include="MobAI.c" />
+    <ClCompile Include="MobList.c" />
     <ClCompile Include="pathfinding.c" />
     <ClCompile Include="pointarraylist.c" />
     <ClCompile Include="render.c" />
@@ -138,6 +144,8 @@
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="lighting.h" />
     <ClInclude Include="map.h" />
+    <ClInclude Include="MobAI.h" />
+    <ClInclude Include="MobList.h" />
     <ClInclude Include="pathfining.h" />
     <ClInclude Include="pointarraylist.h" />
     <ClInclude Include="render.h" />
