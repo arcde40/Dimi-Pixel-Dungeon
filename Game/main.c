@@ -9,6 +9,7 @@
 #include "lighting.h"
 #include "MobAI.h"
 #include "MobList.h"
+#include "Player.h"
 #include <time.h>
 #include <locale.h>
 #include <Windows.h>
@@ -17,7 +18,7 @@
 
 
 int main() {
-	setlocale(LC_ALL, "");
+	//setlocale(LC_ALL, "ko-KR");
 	srand(time(NULL));
 	int map[MIN_X+MAX_X][MIN_Y+MAX_Y] = { {0,} };
 	RoomArrayList* array = initRoomArray();
@@ -59,9 +60,13 @@ int main() {
 	GetConsoleMode(CIN, &mode);
 	SetConsoleMode(CIN, mode | ENABLE_MOUSE_INPUT);
 	wchar_t coloredBuffer[189 * 5] = { 0, };
-	//MobInfo mobInfo = { L"Å×½ºÆ®¸÷", 0, 1, 50, 50, MOB_BEHAVE_HOSTILE, false, 10, false, NULL, 0};
+	MobInfo mobInfo = { L"Å×½ºÆ®¸÷", 20, 1, playerX - 4, playerY - 4, MOB_BEHAVE_HOSTILE, false, 5, false, NULL, 0};
 
-	//putMobInfo(mobList, &mobInfo);
+	// Important!
+	Player p = { 0, };
+	p.maxHealth = 100;
+	p.Health = 100;
+	putMobInfo(mobList, &mobInfo);
 	while (1) {
 
 		Sleep(MAX_FRAME);
@@ -71,16 +76,17 @@ int main() {
 
 		defaultLayout(defaultBuffer);
 		gotoxy(0, 0);
-		updateMap(playerX, playerY, 20, 60, map, 4, 45, 6, 129, defaultBuffer);
+		updateMap(playerX, playerY, 20, 60, map, 4, 45, 6, 129, defaultBuffer, mobList);
 		defaultLighting(colorMap);
-		mapLighting1(playerX, playerY, 50, colorMap, map, visitMap);
+		updatePlayerInfo(p.Health, p.maxHealth, defaultBuffer);
+		//mapLighting1(playerX, playerY, 50, colorMap, map, visitMap);
 		//generatePopup(POPUP_CENTER, 30, 60, defaultBuffer, colorMap);
 		
 		
 		//Sleep(100);
 		for (int i = 0; i < 49; i++) {
 			applyColor(colorMap[i], defaultBuffer[i], coloredBuffer);
-			fwprintf(stdout, L"%ls", coloredBuffer);
+			fprintf(stdout, "%S", coloredBuffer);
 			if (i != 48) fprintf(stdout, "\n");
 		}
 		
@@ -109,7 +115,7 @@ int main() {
 					path = findPath(map, playerX, playerY, playerX + x - 25, playerY + y - 66);
 
 					if (path != NULL) {
-						pathSequence = path->size - 1;
+						pathSequence = path->size - 2;
 						isMoving = true;
 					}
 				}
@@ -118,8 +124,9 @@ int main() {
 
 		if (isMoving) {
 			playerX = getPoint(path, pathSequence)->x;
-			playerY = getPoint(path, pathSequence--)->y;
-			if (pathSequence == -1) isMoving = false;
+			playerY = getPoint(path, pathSequence--)->y;			
+			enemyBehave(&mobInfo, playerX, playerY, map, &p);
+			if (pathSequence <= 0) isMoving = false;
 		}
 
 		/*char ch = getch();

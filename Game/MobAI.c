@@ -1,22 +1,40 @@
 #include "MobAI.h"
 
-PointArrayList* enemyBehave(MobInfo* mobInfo, int playerX, int playerY, int map[][MAX_Y+MIN_Y]) {
+PointArrayList* enemyBehave(MobInfo* mobInfo, int playerX, int playerY, int map[][MAX_Y+MIN_Y], Player* p) {
 	if (mobInfo->isAwake) {
-		moveMob(mobInfo, playerX, playerY, map);
+		moveMob(mobInfo, playerX, playerY, map, p);
 	}
 	else if (mobInfo->MOB_BEHAVIOR_TYPE == MOB_BEHAVE_HOSTILE) {
 		if (observeLine(playerX, playerY, mobInfo->posX, mobInfo->posY, map, playerX, playerY, mobInfo->sightRange)) {
 			mobInfo->isAwake = true;
-			moveMob(mobInfo, playerX, playerY, map);
+			//moveMob(mobInfo, playerX, playerY, map);
 		}
 	}
 }
 
-void moveMob(MobInfo* mobInfo, int playerX, int playerY, int map[][MAX_Y+MIN_Y]) {
-	PointArrayList *l = findPath(map, mobInfo->posX, mobInfo->posY, playerX, playerY);
-	mobInfo->posX = getPoint(l, 0)->x;
-	mobInfo->posY = getPoint(l, 0)->y;
-	free(l);
+void moveMob(MobInfo* mobInfo, int playerX, int playerY, int map[][MAX_Y+MIN_Y], Player* p) {
+	if ((mobInfo->posX == playerX + 1 || mobInfo->posX == playerX || mobInfo->posX == playerX - 1) && (mobInfo->posY == playerY - 1 || mobInfo->posY == playerY || mobInfo->posY == playerY + 1)) mobAttack(p, mobInfo);
+	else {
+		int offsetX, offsetY;
+		int topX=0, topY=0, topVal = 200000;
+		for (offsetX = -1; offsetX <= 1; offsetX++) {
+			for (offsetY = -1; offsetY <= 1; offsetY++) {
+				if (isPassable(map[mobInfo->posX + offsetX][mobInfo->posY + offsetY])) {
+					if (getH(playerX, playerY, mobInfo->posX + offsetX, mobInfo->posY + offsetY) < topVal) {
+						topVal = getH(playerX, playerY, mobInfo->posX + offsetX, mobInfo->posY + offsetY);
+						topX = offsetX; topY = offsetY;
+					}
+				}
+			}
+		}
+		mobInfo->posX += topX; mobInfo->posY += topY;
+	}
+}
+
+void mobAttack(Player* p, MobInfo* mob) {
+	int damage = (rand() % (mob->maxDamage - mob->minDamage)) + mob->minDamage;
+	p->Health -= damage;
+	return;
 }
 
 
@@ -34,7 +52,7 @@ bool observeLine(int x1, int y1, int x2, int y2, int map[][MAX_Y + MIN_Y], int l
 			for (int x = x1; x > x2; x--) {
 				// Process Start
 				if (x < 0 || y < 0 || x > MAX_X + MIN_X || y > MAX_Y + MIN_Y) return false;
-				if (x - x1 > range) return false;
+				if (ABS(x - x2) > range) return false;
 				if (locationX == x && locationY == y) return true;
 				if (!isTransparent(map[x][y])) return false;
 				// Process End
@@ -49,7 +67,7 @@ bool observeLine(int x1, int y1, int x2, int y2, int map[][MAX_Y + MIN_Y], int l
 			for (int x = x1; x < x2; x++) {
 				// Process Start
 				if (x < 0 || y < 0 || x > MAX_X + MIN_X || y > MAX_Y + MIN_Y) return false;
-				if (x - x1 > range) return false;
+				if (ABS(x - x1) > range) return false;
 				if (locationX == x && locationY == y) return true;
 				if (!isTransparent(map[x][y])) return false;
 				// Process End
@@ -75,7 +93,7 @@ bool observeLine(int x1, int y1, int x2, int y2, int map[][MAX_Y + MIN_Y], int l
 			for (int y = y1; y > y2; y--) {
 				// Process Start
 				if (x < 0 || y < 0 || x > MAX_X + MIN_X || y > MAX_Y + MIN_Y) return false;
-				if (y - y1 > range) return false;
+				if (ABS(y - y2) > range) return false;
 				if (locationX == x && locationY == y) return true;
 				if (!isTransparent(map[x][y])) return false;
 				// Process End
@@ -91,7 +109,7 @@ bool observeLine(int x1, int y1, int x2, int y2, int map[][MAX_Y + MIN_Y], int l
 			for (int y = y1; y < y2; y++) {
 				// Process Start
 				if (x < 0 || y < 0 || x > MAX_X + MIN_X || y > MAX_Y + MIN_Y) return false;
-				if (y - y1 > range) return false;
+				if (ABS(y - y1) > range) return false;
 				if (locationX == x && locationY == y) return true;
 				if (!isTransparent(map[x][y])) return false;
 				// Process End

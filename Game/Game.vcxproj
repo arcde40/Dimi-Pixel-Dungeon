@@ -133,6 +133,7 @@
     <ClCompile Include="MobAI.c" />
     <ClCompile Include="MobList.c" />
     <ClCompile Include="pathfinding.c" />
+    <ClCompile Include="Player.c" />
     <ClCompile Include="pointarraylist.c" />
     <ClCompile Include="render.c" />
     <ClCompile Include="room.c" />
@@ -147,6 +148,7 @@
     <ClInclude Include="MobAI.h" />
     <ClInclude Include="MobList.h" />
     <ClInclude Include="pathfining.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="pointarraylist.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="room.h" />

@@ -1,6 +1,5 @@
 #pragma once
 #include "GlobalVariable.h"
-#include <stdio.h>
 #include <stdbool.h>
 #include "pointarraylist.h"
 

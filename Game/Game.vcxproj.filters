@@ -40,6 +40,12 @@
     <Filter Include="소스 파일\Mob">
       <UniqueIdentifier>{71025596-69e7-491b-83ec-ccdd38f5398f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\Player">
+      <UniqueIdentifier>{c8e4391f-3f5a-4231-8ef3-69a101b18f19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Player">
+      <UniqueIdentifier>{3e06a448-84de-4a79-a805-cc1f3a8bb6a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -66,9 +72,6 @@
     <ClCompile Include="map.c">
       <Filter>소스 파일\Room</Filter>
     </ClCompile>
-    <ClCompile Include="render.c">
-      <Filter>소스 파일\Render</Filter>
-    </ClCompile>
     <ClCompile Include="lighting.c">
       <Filter>소스 파일\Render</Filter>
     </ClCompile>
@@ -80,6 +83,12 @@
     </ClCompile>
     <ClCompile Include="MobList.c">
       <Filter>소스 파일\Mob</Filter>
+    </ClCompile>
+    <ClCompile Include="render.c">
+      <Filter>소스 파일\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.c">
+      <Filter>소스 파일\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="MobAI.h">
       <Filter>헤더 파일\Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>헤더 파일\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

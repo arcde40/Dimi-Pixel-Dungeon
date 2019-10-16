@@ -21,7 +21,7 @@ void defaultLayout(wchar_t buffer[][189]) {
 "#   #############################################################################################################################                     TEST TESTT ESTTEST                  #",
 "#   #                                                                                                                           #                                                         #",
 "#   #                                                                                                                           #                                                         #",
-"#   #                                                                                                                           #     HP: [==================================] 100/100    #",
+"#   #                                                                                                                           #     HP: [                                  ] 000/000    #",
 "#   #                                                                                                                           #                                                         #",
 "#   #                                                                                                                           #                                                         #",
 "#   #                                                                                                                           #                                                         #",
@@ -93,8 +93,51 @@ char getPrintChar(int i) {
 	default: return (char)(i + 48); 
 	}
 }
+
+// Health : 6 / 140 ~ 174 34ĭ 
+// 175 ~ 177 / 179 ~ 181
+void updatePlayerInfo(int Health, int maxHealth, wchar_t defaultBuffer[][189]) {
+
+	if (Health > 0) {
+		for (int i = 0; i <= (Health) * (34 - 1) / (maxHealth); i++) {
+			defaultBuffer[5][139 + i] = '=';
+		}
+	}
+	else {
+		for (int i = 0; i < 34; i++) {
+			defaultBuffer[5][139 + i] = ' ';
+		}
+	}
+
+	
+	if (Health < 100) {
+		defaultBuffer[5][175] = ' ';
+	}
+	else defaultBuffer[5][175] = (Health / 100) + '0';
+
+	if (Health < 10) {
+		defaultBuffer[5][176] = ' ';
+	}
+	else defaultBuffer[5][176] = ((Health % 100) / 10) + '0';
+
+	defaultBuffer[5][177] = (Health % 10) + '0';
+
+	if (maxHealth < 100) {
+		defaultBuffer[5][179] = ' ';
+	}
+	else defaultBuffer[5][179] = (maxHealth / 100) + '0';
+
+	if (maxHealth < 10) {
+		defaultBuffer[5][180] = ' ';
+	}
+	else defaultBuffer[5][180] = ((maxHealth % 100) / 10) + '0';
+
+	defaultBuffer[5][181] = (maxHealth % 10) + '0';
+}
+
+
 // (4,6) ~ (45, 129)
-void updateMap(int playerX, int playerY, int renderRangeX, int renderRangeY, int map[][MIN_Y+MAX_Y], int startPosX, int endPosX, int startPosY, int endPosY, wchar_t defaultBuffer[49][189]) {
+void updateMap(int playerX, int playerY, int renderRangeX, int renderRangeY, int map[][MIN_Y+MAX_Y], int startPosX, int endPosX, int startPosY, int endPosY, wchar_t defaultBuffer[49][189], MobList* mobList) {
 	int minRenderRangeX = playerX - renderRangeX, maxRenderRangeX = playerX + renderRangeX;
 	int minRenderRangeY = playerY - renderRangeY, maxRenderRangeY = playerY + renderRangeY;
 	int bufferPosX = startPosX; int bufferPosY = startPosY;
@@ -113,12 +156,12 @@ void updateMap(int playerX, int playerY, int renderRangeX, int renderRangeY, int
 	}
 	
 	// Display Mob
-	/*for (int i = 0; i < mobList->size; i++) {
+	for (int i = 0; i < mobList->size; i++) {
 		MobInfo* info = getMobInfo(mobList, i);
 		if (ABS(playerX - info->posX) <= 25 && ABS(playerY - info->posY) <= 66) {
-			defaultBuffer[playerX + info->posX - 25][playerY + info->posY - 66] = 'E';
+			defaultBuffer[-playerX + info->posX + 25][-playerY + info->posY + 66] = 'E';
 		}
-	}*/
+	}
 }
 
 

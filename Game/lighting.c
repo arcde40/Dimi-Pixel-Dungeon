@@ -33,11 +33,11 @@ void applyColor(WORD* colorMap, wchar_t* buffer, wchar_t* appliedBuffer) {
 	for (int i = 0; i < 189; i++) {
 		if (prev != colorMap[i]) {
 			prev = colorMap[i];
-			appliedBuffer[scope++] = L'\x1b';
-			appliedBuffer[scope++] = L'[';
-			appliedBuffer[scope++] = colorMap[i] / 10 + L'0';
-			appliedBuffer[scope++] = colorMap[i] % 10 + L'0';
-			appliedBuffer[scope++] = L'm';
+			appliedBuffer[scope++] = '\x1b';
+			appliedBuffer[scope++] = '[';
+			appliedBuffer[scope++] = colorMap[i] / 10 + '0';
+			appliedBuffer[scope++] = colorMap[i] % 10 + '0';
+			appliedBuffer[scope++] = 'm';
 			appliedBuffer[scope++] = buffer[i];
 		}
 		else {
