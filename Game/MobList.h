@@ -2,9 +2,13 @@
 #include "GlobalVariable.h"
 #include <stdbool.h>
 #include "pointarraylist.h"
+#include "LogArrayList.h"
 
 typedef struct MobInfo {
+	int UUID;
 	wchar_t* name;
+	int Health;
+	int maxHealth;
 	int minDamage;
 	int maxDamage;
 	int posX, posY;

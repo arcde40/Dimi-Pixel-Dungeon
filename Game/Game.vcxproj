@@ -76,6 +76,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,6 +129,8 @@
     </ClCompile>
     <ClCompile Include="InputHandler.c" />
     <ClCompile Include="lighting.c" />
+    <ClCompile Include="LogArrayList.c" />
+    <ClCompile Include="Logger.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="map.c" />
     <ClCompile Include="MobAI.c" />
@@ -143,7 +146,10 @@
     <ClInclude Include="arraylist.h" />
     <ClInclude Include="GlobalVariable.h" />
     <ClInclude Include="InputHandler.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="lighting.h" />
+    <ClInclude Include="LogArrayList.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="MobAI.h" />
     <ClInclude Include="MobList.h" />

@@ -46,6 +46,9 @@
     <Filter Include="소스 파일\Player">
       <UniqueIdentifier>{3e06a448-84de-4a79-a805-cc1f3a8bb6a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\Item">
+      <UniqueIdentifier>{2939ae8f-acf3-4226-9b1c-50e36e9a19cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -90,6 +93,12 @@
     <ClCompile Include="Player.c">
       <Filter>소스 파일\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Logger.c">
+      <Filter>소스 파일\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="LogArrayList.c">
+      <Filter>소스 파일\Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="struct.h">
@@ -133,6 +142,15 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>헤더 파일\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>헤더 파일\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>헤더 파일\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="LogArrayList.h">
+      <Filter>헤더 파일\Util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

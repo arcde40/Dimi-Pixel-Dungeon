@@ -44,7 +44,7 @@
 
 // Other
 
-#define MAX_FRAME 10
+#define MAX_FRAME 50
 
 // Render
 

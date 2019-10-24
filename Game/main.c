@@ -10,15 +10,20 @@
 #include "MobAI.h"
 #include "MobList.h"
 #include "Player.h"
+#include "Logger.h"
+#include "LogArrayList.h"
 #include <time.h>
 #include <locale.h>
 #include <Windows.h>
+#include <string.h>
 
 #include "GlobalVariable.h"
 
 
 int main() {
-	//setlocale(LC_ALL, "ko-KR");
+	//setlocale(LC_ALL, "");
+	//setlocale(LC_ALL, "");
+	//_wsetlocale(LC_ALL, L"Korean");
 	srand(time(NULL));
 	int map[MIN_X+MAX_X][MIN_Y+MAX_Y] = { {0,} };
 	RoomArrayList* array = initRoomArray();
@@ -60,13 +65,15 @@ int main() {
 	GetConsoleMode(CIN, &mode);
 	SetConsoleMode(CIN, mode | ENABLE_MOUSE_INPUT);
 	wchar_t coloredBuffer[189 * 5] = { 0, };
-	MobInfo mobInfo = { L"테스트몹", 20, 1, playerX - 4, playerY - 4, MOB_BEHAVE_HOSTILE, false, 5, false, NULL, 0};
+	MobInfo mobInfo = { 100, L"테스트몹", 10, 20, 20, 1, playerX - 4, playerY - 4, MOB_BEHAVE_HOSTILE, false, 5, false, NULL, 0};
 
 	// Important!
 	Player p = { 0, };
 	p.maxHealth = 100;
 	p.Health = 100;
 	putMobInfo(mobList, &mobInfo);
+	LogArrayList* arr = initLogArray();
+	putMBS(arr, "환영합니다.");
 	while (1) {
 
 		Sleep(MAX_FRAME);
@@ -79,6 +86,9 @@ int main() {
 		updateMap(playerX, playerY, 20, 60, map, 4, 45, 6, 129, defaultBuffer, mobList);
 		defaultLighting(colorMap);
 		updatePlayerInfo(p.Health, p.maxHealth, defaultBuffer);
+		
+		
+		printLog(defaultBuffer, arr);
 		//mapLighting1(playerX, playerY, 50, colorMap, map, visitMap);
 		//generatePopup(POPUP_CENTER, 30, 60, defaultBuffer, colorMap);
 		
@@ -86,7 +96,7 @@ int main() {
 		//Sleep(100);
 		for (int i = 0; i < 49; i++) {
 			applyColor(colorMap[i], defaultBuffer[i], coloredBuffer);
-			fprintf(stdout, "%S", coloredBuffer);
+			fwprintf(stdout, L"%ls", coloredBuffer);
 			if (i != 48) fprintf(stdout, "\n");
 		}
 		
@@ -123,11 +133,14 @@ int main() {
 		}
 
 		if (isMoving) {
+			int prevPlayerX = playerX, prevPlayerY = playerY;
 			playerX = getPoint(path, pathSequence)->x;
 			playerY = getPoint(path, pathSequence--)->y;			
-			enemyBehave(&mobInfo, playerX, playerY, map, &p);
+			enemyBehave(&mobInfo, playerX, playerY, map, &p, prevPlayerX, prevPlayerY, arr);
 			if (pathSequence <= 0) isMoving = false;
 		}
+
+		if (p.Health <= 0) break;
 
 		/*char ch = getch();
 		switch (ch)
