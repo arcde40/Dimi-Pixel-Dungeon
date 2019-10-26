@@ -72,7 +72,7 @@ void mapLighting1(int playerX, int playerY, int renderRange, WORD colorMap[][189
 				if (visitMap[playerX + i - 25][playerY + j - 66]) colorMap[i][j] = COLOR_BRIGHT_BLACK;
 				else colorMap[i][j] = COLOR_BLACK;
 			}
-			else colorMap[i][j] -= 1;
+			else colorMap[i][j] = COLOR_BRIGHT_WHITE;
 		}
 	}
 }

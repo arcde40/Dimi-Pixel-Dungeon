@@ -3,8 +3,10 @@
 #include "Item.h"
 #include "LogArrayList.h"
 
+
 #include "GlobalVariable.h"
 
+#include <stdio.h>
 typedef struct Player {
 	int Health, maxHealth;
 	int playerX, playerY;
@@ -13,3 +15,7 @@ typedef struct Player {
 	Item* equippedArmor;
 	Item* equippedAccesory[2];
 }Player;
+
+void playerAttack(Player* p, MobInfo* mob, MobList* list, LogArrayList* log);
+bool attackAble(Player* p, MobList* list, LogArrayList* log);
+MobInfo* getMobInfoByPosition(int x, int y, MobList* list);

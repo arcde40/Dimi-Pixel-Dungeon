@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "Logger.h"
 #include "LogArrayList.h"
+#include "Item.h"
 #include <time.h>
 #include <locale.h>
 #include <Windows.h>
@@ -26,6 +27,7 @@ int main() {
 	//_wsetlocale(LC_ALL, L"Korean");
 	srand(time(NULL));
 	int map[MIN_X+MAX_X][MIN_Y+MAX_Y] = { {0,} };
+	int moveXY[3] = {-1, 0, 1};
 	RoomArrayList* array = initRoomArray();
 	for (int i = 0; i < MIN_ROOM_COUNT || (i < MAX_ROOM_COUNT && (int)(rand() * 10 % 2) == 0); i++) {
 		putRoom(array, init(i, (int)(rand() * 10) % (MAX_ROOM_WEIGHT - MIN_ROOM_WEIGHT) + MIN_ROOM_WEIGHT, (int)(rand() * 10) % (MAX_ROOM_HEIGHT - MIN_ROOM_HEIGHT) + MIN_ROOM_HEIGHT, (int)(rand() * 10) % (MAX_X - MIN_X) + MIN_X, (int)(rand() * 10) % (MAX_Y - MIN_Y) + MIN_Y, 0));
@@ -64,17 +66,23 @@ int main() {
 	// 마우스 활성화
 	GetConsoleMode(CIN, &mode);
 	SetConsoleMode(CIN, mode | ENABLE_MOUSE_INPUT);
+	// Debug Property Start
 	wchar_t coloredBuffer[189 * 5] = { 0, };
-	MobInfo mobInfo = { 100, L"테스트몹", 10, 20, 20, 1, playerX - 4, playerY - 4, MOB_BEHAVE_HOSTILE, false, 5, false, NULL, 0};
-
+	MobInfo mobInfo = { 100, "테스트몹", 100, 100, 50, 75, playerX - 1, playerY - 1, MOB_BEHAVE_HOSTILE, false, 5, false, NULL, 0};
 	// Important!
 	Player p = { 0, };
-	p.maxHealth = 100;
-	p.Health = 100;
+	p.maxHealth = 999;
+	p.Health = 999;
+	Item item = { 0, ITEM_WEAPON, 10, 20, 2, 1 };
+	p.equippedWeapon = &item;
 	putMobInfo(mobList, &mobInfo);
+	// Debug Property End
+
 	LogArrayList* arr = initLogArray();
-	putMBS(arr, "환영합니다.");
+	putMBS(arr, "작전 구역의 1층으로 진입했습니다.");
 	while (1) {
+		p.playerX = playerX;
+		p.playerY = playerY;
 
 		Sleep(MAX_FRAME);
 		//ClearScreen();
@@ -89,7 +97,7 @@ int main() {
 		
 		
 		printLog(defaultBuffer, arr);
-		//mapLighting1(playerX, playerY, 50, colorMap, map, visitMap);
+		mapLighting1(playerX, playerY, 50, colorMap, map, visitMap);
 		//generatePopup(POPUP_CENTER, 30, 60, defaultBuffer, colorMap);
 		
 		
@@ -116,17 +124,27 @@ int main() {
 					// Clicked Coordinate (CC)
 					// CC - 25 = dx CC - 66 = dy
 					// playerX + dx = actual coordinate 
+
+
+
 					if (isMoving) {
 						path = NULL;
 						pathSequence = 0;
 						isMoving = false;
 					}
 
-					path = findPath(map, playerX, playerY, playerX + x - 25, playerY + y - 66);
+					if (getMobInfoByPosition(playerX + x - 25, playerY + y - 66, mobList) != NULL && attackAble(&p, mobList, arr));
+					else {
+						path = findPath(map, playerX, playerY, playerX + x - 25, playerY + y - 66);
 
-					if (path != NULL) {
-						pathSequence = path->size - 2;
-						isMoving = true;
+						if (path != NULL) {
+							pathSequence = path->size - 2;
+							isMoving = true;
+						}
+					}
+
+					for (int i = 0; i < mobList->size; i++) {
+						enemyBehave(getMobInfo(mobList, i), playerX, playerY, map, &p, playerX, playerY, arr);
 					}
 				}
 			}
@@ -136,12 +154,27 @@ int main() {
 			int prevPlayerX = playerX, prevPlayerY = playerY;
 			playerX = getPoint(path, pathSequence)->x;
 			playerY = getPoint(path, pathSequence--)->y;			
-			enemyBehave(&mobInfo, playerX, playerY, map, &p, prevPlayerX, prevPlayerY, arr);
+			for (int i = 0; i < mobList->size; i++) {
+				enemyBehave(getMobInfo(mobList, i), playerX, playerY, map, &p, prevPlayerX, prevPlayerY, arr);
+			}
+			
 			if (pathSequence <= 0) isMoving = false;
+		}
+		else {
+			for (int i = 0x0; i < 0x9; i++) {
+				if (GetAsyncKeyState(0x61 + i)) {
+					playerY += moveXY[i % 3];
+					playerX -= moveXY[i / 3];
+					Sleep(100);
+					break;
+				}
+			}
 		}
 
 		if (p.Health <= 0) break;
 
+
+		
 		/*char ch = getch();
 		switch (ch)
 		{

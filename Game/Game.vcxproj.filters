@@ -49,6 +49,9 @@
     <Filter Include="헤더 파일\Item">
       <UniqueIdentifier>{2939ae8f-acf3-4226-9b1c-50e36e9a19cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Core">
+      <UniqueIdentifier>{6cd2f25a-1e4f-41e9-a822-0d3c3e6d0162}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -98,6 +101,9 @@
     </ClCompile>
     <ClCompile Include="LogArrayList.c">
       <Filter>소스 파일\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.c">
+      <Filter>소스 파일\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

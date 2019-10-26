@@ -3,6 +3,7 @@
 #include "lighting.h"
 #include "MobList.h"
 #include "Player.h"
+#include <stdio.h>
 
 PointArrayList* enemyBehave(MobInfo* mobInfo, int playerX, int playerY, int map[][MAX_Y + MIN_Y], Player* p, int prevPlayerX, int prevPlayerY, LogArrayList* arr);
 void moveMob(MobInfo* mobInfo, int playerX, int playerY, int map[][MAX_Y + MIN_Y], Player* p, int prevPlayerX, int prevPlayerY, LogArrayList* arr);

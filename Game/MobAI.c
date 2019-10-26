@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "MobAI.h"
 
 PointArrayList* enemyBehave(MobInfo* mobInfo, int playerX, int playerY, int map[][MAX_Y+MIN_Y], Player* p, int prevPlayerX, int prevPlayerY, LogArrayList* arr) {
@@ -16,7 +17,7 @@ void moveMob(MobInfo* mobInfo, int playerX, int playerY, int map[][MAX_Y+MIN_Y],
 	if ((mobInfo->posX == playerX + 1 || mobInfo->posX == playerX || mobInfo->posX == playerX - 1) && (mobInfo->posY == playerY - 1 || mobInfo->posY == playerY || mobInfo->posY == playerY + 1)) mobAttack(p, mobInfo, arr);
 	else {
 		int offsetX, offsetY;
-		int topX=0, topY=0, topVal = 200000;
+		int topX=0, topY=0, topVal = 32767;
 		for (offsetX = -1; offsetX <= 1; offsetX++) {
 			for (offsetY = -1; offsetY <= 1; offsetY++) {
 				if (isPassable(map[mobInfo->posX + offsetX][mobInfo->posY + offsetY])) {
@@ -32,9 +33,13 @@ void moveMob(MobInfo* mobInfo, int playerX, int playerY, int map[][MAX_Y+MIN_Y],
 }
 
 void mobAttack(Player* p, MobInfo* mob, LogArrayList* arr) {
-	int damage = (rand() % (mob->maxDamage - mob->minDamage)) + mob->minDamage;
+	int damage;
+	if (mob->minDamage == mob->maxDamage) damage = mob->minDamage;
+	else damage = (rand() % (mob->maxDamage - mob->minDamage)) + mob->minDamage;
 	p->Health -= damage;
-	putMBS(arr, "피격되었다.");
+	char t[100] = { 0, };
+	sprintf(t, "%s으로부터 %d 데미지를 입었다!", mob->name, damage);
+	putMBS(arr, t);
 	return;
 }
 

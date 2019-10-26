@@ -6,7 +6,7 @@
 
 typedef struct MobInfo {
 	int UUID;
-	wchar_t* name;
+	char* name;
 	int Health;
 	int maxHealth;
 	int minDamage;

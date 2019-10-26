@@ -44,7 +44,7 @@
 
 // Other
 
-#define MAX_FRAME 50
+#define MAX_FRAME 10
 
 // Render
 
@@ -62,3 +62,15 @@
 #define MOB_DETECT_RANGE_MEDIUM 10
 #define MOB_DETECT_RANGE_LONG 15
 #define MOB_DETECT_RANGE_INFINITE 100
+
+// Item Type
+#define ITEM_WEAPON 0x1
+#define ITEM_ACCESORY 0x2
+#define ITEM_ARMOR 0x3
+#define ITEM_FOOD 0x4
+#define ITEM_UTILITY 0x5
+
+
+// Utility
+
+#define	ABS(x)			( ((x)<0)?-(x):(x) )

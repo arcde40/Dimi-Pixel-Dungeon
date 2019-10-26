@@ -177,6 +177,8 @@ int drawTitle() {
 	return 0;
 }
 
+
+
 void drawMenu() {
 	gotoxy(90, 30);
 	printf("> 게임 시작");
