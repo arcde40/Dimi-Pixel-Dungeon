@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "render.h"
 // X: 188 Y: 49 √÷¥Î
 
@@ -138,7 +139,7 @@ void updatePlayerInfo(int Health, int maxHealth, wchar_t defaultBuffer[][189]) {
 
 
 // (4,6) ~ (45, 129)
-void updateMap(int playerX, int playerY, int renderRangeX, int renderRangeY, int map[][MIN_Y+MAX_Y], int startPosX, int endPosX, int startPosY, int endPosY, wchar_t defaultBuffer[49][189], MobList* mobList) {
+void updateMap(int playerX, int playerY, int renderRangeX, int renderRangeY, int map[][MIN_Y+MAX_Y], int startPosX, int endPosX, int startPosY, int endPosY, wchar_t defaultBuffer[49][189]) {
 	int minRenderRangeX = playerX - renderRangeX, maxRenderRangeX = playerX + renderRangeX;
 	int minRenderRangeY = playerY - renderRangeY, maxRenderRangeY = playerY + renderRangeY;
 	int bufferPosX = startPosX; int bufferPosY = startPosY;
@@ -156,13 +157,6 @@ void updateMap(int playerX, int playerY, int renderRangeX, int renderRangeY, int
 		if (bufferPosX == endPosX) break;
 	}
 	
-	// Display Mob
-	for (int i = 0; i < mobList->size; i++) {
-		MobInfo* info = getMobInfo(mobList, i);
-		if (ABS(playerX - info->posX) <= 25 && ABS(playerY - info->posY) <= 66) {
-			defaultBuffer[-playerX + info->posX + 25][-playerY + info->posY + 66] = 'E';
-		}
-	}
 }
 
 
@@ -198,6 +192,10 @@ void render() {
 
 void generatePopup(int Type, int height, int width, wchar_t buffer[][189], WORD colorMap[][189]) {
 
+	//wchar_t horizontalSign=0, verticalSign = 0;
+	//mbtowc(&horizontalSign, "¶°", strlen("¶°"));
+	//mbtowc(&verticalSign, "¶¢", strlen("¶¢"));
+
 	int offsetX = 0, offsetY = 0;
 	if (Type == POPUP_CENTER) {
 		offsetX = 49 / 2 - height / 2;
@@ -206,11 +204,11 @@ void generatePopup(int Type, int height, int width, wchar_t buffer[][189], WORD 
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				if (i == 0 || i == height - 1) {
-					buffer[i+offsetX][j+offsetY] = L'¶°';
+					buffer[i+offsetX][j+offsetY] = '-';
 					colorMap[i+offsetX][j+offsetY] = COLOR_BRIGHT_WHITE;
 				}
 				else if (j == 0 || j == width - 1) {
-					buffer[i+offsetX][j+offsetY] = L'¶¢';
+					buffer[i+offsetX][j+offsetY] = '|';
 					colorMap[i+offsetX][j+offsetY] = COLOR_BRIGHT_WHITE;
 				}
 				else colorMap[i+offsetX][j+offsetY] = COLOR_BLACK;

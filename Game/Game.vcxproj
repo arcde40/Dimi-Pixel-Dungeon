@@ -138,6 +138,7 @@
     <ClCompile Include="MobList.c" />
     <ClCompile Include="pathfinding.c" />
     <ClCompile Include="Player.c" />
+    <ClCompile Include="PlayerGUI.c" />
     <ClCompile Include="pointarraylist.c" />
     <ClCompile Include="render.c" />
     <ClCompile Include="room.c" />
@@ -145,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="arraylist.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="GlobalVariable.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Item.h" />
@@ -154,8 +156,9 @@
     <ClInclude Include="map.h" />
     <ClInclude Include="MobAI.h" />
     <ClInclude Include="MobList.h" />
-    <ClInclude Include="pathfining.h" />
+    <ClInclude Include="pathfinding.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerGUI.h" />
     <ClInclude Include="pointarraylist.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="room.h" />

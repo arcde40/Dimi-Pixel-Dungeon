@@ -51,6 +51,8 @@
 #define POPUP_TOP 0
 #define POPUP_CENTER 1
 #define POPUP_BOTTOM 2
+#define RENDERRANGE_X 20
+#define RENDERRANGE_Y 60
 
 // Mob AI
 #define MOB_BEHAVE_STAY 0

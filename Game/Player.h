@@ -17,5 +17,5 @@ typedef struct Player {
 }Player;
 
 void playerAttack(Player* p, MobInfo* mob, MobList* list, LogArrayList* log);
-bool attackAble(Player* p, MobList* list, LogArrayList* log);
+bool attackAble(Player* p, MobInfo* info, MobList* list, LogArrayList* log);
 MobInfo* getMobInfoByPosition(int x, int y, MobList* list);

@@ -27,5 +27,6 @@ void removePoint(PointArrayList* arr, int index) {
 }
 
 POINT_P* getPoint(PointArrayList* arr, int idx) {
+	if (arr == NULL) return NULL;
 	return arr->data[idx];
 }

@@ -1,22 +1,22 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "MobAI.h"
 
-PointArrayList* enemyBehave(MobInfo* mobInfo, int playerX, int playerY, int map[][MAX_Y+MIN_Y], Player* p, int prevPlayerX, int prevPlayerY, LogArrayList* arr) {
+PointArrayList* enemyBehave(MobInfo* mobInfo, MobList* mobList, int playerX, int playerY, int map[][MAX_Y+MIN_Y], Player* p, int prevPlayerX, int prevPlayerY, LogArrayList* arr) {
 	if (mobInfo->isAwake) {
-		moveMob(mobInfo, playerX, playerY, map, p, prevPlayerX, prevPlayerY, arr);
+		moveMob(mobInfo, playerX, playerY, map, p, prevPlayerX, prevPlayerY, arr, mobList);
 	}
 	else if (mobInfo->MOB_BEHAVIOR_TYPE == MOB_BEHAVE_HOSTILE) {
-		if (observeLine(playerX, playerY, mobInfo->posX, mobInfo->posY, map, playerX, playerY, mobInfo->sightRange)) {
+		if (observeLine(mobInfo->posX, mobInfo->posY, playerX, playerY, map, playerX, playerY, mobInfo->sightRange)) {
 			mobInfo->isAwake = true;
 			//moveMob(mobInfo, playerX, playerY, map);
 		}
 	}
 }
 
-void moveMob(MobInfo* mobInfo, int playerX, int playerY, int map[][MAX_Y+MIN_Y], Player* p, int prevPlayerX, int prevPlayerY, LogArrayList* arr) {
+void moveMob(MobInfo* mobInfo, int playerX, int playerY, int map[][MAX_Y+MIN_Y], Player* p, int prevPlayerX, int prevPlayerY, LogArrayList* arr, MobList* mobList) {
 	if ((mobInfo->posX == playerX + 1 || mobInfo->posX == playerX || mobInfo->posX == playerX - 1) && (mobInfo->posY == playerY - 1 || mobInfo->posY == playerY || mobInfo->posY == playerY + 1)) mobAttack(p, mobInfo, arr);
 	else {
-		int offsetX, offsetY;
+		/*int offsetX, offsetY;
 		int topX=0, topY=0, topVal = 32767;
 		for (offsetX = -1; offsetX <= 1; offsetX++) {
 			for (offsetY = -1; offsetY <= 1; offsetY++) {
@@ -27,8 +27,12 @@ void moveMob(MobInfo* mobInfo, int playerX, int playerY, int map[][MAX_Y+MIN_Y],
 					}
 				}
 			}
+		}*/
+		PointArrayList* arr = findPath(map, mobInfo->posX, mobInfo->posY, prevPlayerX, prevPlayerY, mobList);
+		if(arr != NULL) {
+			POINT_P* p = getPoint(arr, arr->size-2);
+			mobInfo->posX = p->x; mobInfo->posY = p->y;
 		}
-		mobInfo->posX += topX; mobInfo->posY += topY;
 	}
 }
 

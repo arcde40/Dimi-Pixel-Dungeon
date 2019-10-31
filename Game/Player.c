@@ -1,18 +1,16 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "Player.h"
+#include <math.h>
 
-bool attackAble(Player* p, MobList* list, LogArrayList* log) {
-	for (int i = 0; i < list->size; i++) {
-		if (ABS(p->playerX - getMobInfo(list, i)->posX) + ABS(p->playerY - getMobInfo(list, i)->posY) <= p->equippedWeapon->attackRange) {
-			playerAttack(p, getMobInfo(list, i), list, log);
-		}
+bool attackAble(Player* p, MobInfo* info, MobList* list, LogArrayList* log) {
+	if (floor(sqrt( pow((p->playerX - info->posX),2) + pow((p->playerY - info->posY),2) )) <= p->equippedWeapon->attackRange) {
+		playerAttack(p, info, list, log);
 	}
-	
 }
 
 MobInfo* getMobInfoByPosition(int x, int y, MobList* list) {
 	for (int i = 0; i < list->size; i++) {
-		if (getMobInfo(list, i)->posX == x && getMobInfo(list, i)->posY) {
+		if (getMobInfo(list, i)->posX == x && getMobInfo(list, i)->posY == y) {
 			return getMobInfo(list,i);
 		}
 	}
