@@ -86,7 +86,13 @@ int main() {
 	p.maxHealth = 999;
 	p.Health = 999;
 	Item item = { "나무 검", "맞아도 하나도 아프지 않다.", 0, ITEM_WEAPON, 10, 20, 1, 1 };
+	Item item2 = { "나무 방패", "&6나무&f로 만들어져 있다.|상당히 약해서 이것으로 무엇을 막을 수 있을지 가늠이 가지 않는다.|혹시 이걸로 막았다가 부서지면 어떡해..", 0, ITEM_ARMOR, 10, 20 , 1, 1 };
+	Item item3 = { "테스트 아이템", "줄바꿈 테스트!|이예!|색코드 테스트!|&8오예!|&9오예!!|&a오예!!|&b오예!!|&c오예!!|&d오예!!|&e오예!!|&f오예!!", 0, ITEM_UTILITY, 10, 20 , 1, 1 };
+
 	p.inventory[0] = &item;
+	p.inventory[1] = &item2;
+	p.inventory[2] = &item3;
+
 	p.equippedWeapon = &item;
 	putMobInfo(mobList, &mobInfo);
 	// Debug Property End
@@ -94,6 +100,7 @@ int main() {
 	LogArrayList* arr = initLogArray();
 	summonMob(mobList, 15, 1, map);
 	putMBS(arr, "작전 구역의 1층으로 진입했습니다.");
+	int inventoryCurPos = 0;
 	while (1) {
 		p.playerX = playerX;
 		p.playerY = playerY;
@@ -123,7 +130,7 @@ int main() {
 			}
 		}
 
-		if(currentLayout == 1) generateInventory(&p, defaultBuffer, colorMap, 0);
+		if(currentLayout == 1) generateInventory(&p, defaultBuffer, colorMap, inventoryCurPos);
 		
 		//Sleep(100);
 		for (int i = 0; i < 49; i++) {
@@ -211,6 +218,16 @@ int main() {
 			if (GetAsyncKeyState(0x49) && !keyInputState[0x49]) {
 				currentLayout = 0;
 				keyInputState[0x49] = true;
+			}
+			// Down
+			if (GetAsyncKeyState(0x28) && !keyInputState[0x28]) {
+				inventoryCurPos++;
+				keyInputState[0x28] = true;
+			}
+			// Up
+			if (GetAsyncKeyState(0x26) && !keyInputState[0x26]) {
+				inventoryCurPos--;
+				keyInputState[0x26] = true;
 			}
 		}
 
