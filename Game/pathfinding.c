@@ -30,11 +30,12 @@ void cpyMap(int target[][MIN_Y+MAX_Y], int to[][MIN_Y+MAX_Y]) {
 }
 
 
-PointArrayList* findPath(int map[][MIN_Y + MAX_Y], int startPosX, int startPosY, int endPosX, int endPosY, MobList* mobList) {
+PointArrayList* findPath(int map[][MIN_Y + MAX_Y], int startPosX, int startPosY, int endPosX, int endPosY, MobList* mobList, int step) {
 	/*
 	* Debug Property
 	* 40 OpenList 41 ClosedList
 	*/
+	int t = 0;
 	//int temp[MAX_X+MIN_X][MIN_Y + MAX_Y] = { 0, };
 	//cpyMap(map, temp); 
 	//char tempBuffer[49][189] = { 0, };
@@ -52,6 +53,7 @@ PointArrayList* findPath(int map[][MIN_Y + MAX_Y], int startPosX, int startPosY,
 	//point->pointX = startPosX; point->y = startPosY;
 	putPoint(openList, point);
 	do {
+		if (step > 0 && t++ == step) break;
 		sort(openList, f);
 		// Exception Handling
 

@@ -1,5 +1,7 @@
 #pragma once
 
+
+
 // Map
 
 #define MIN_ROOM_COUNT 10
@@ -72,6 +74,9 @@
 #define ITEM_FOOD 0x4
 #define ITEM_UTILITY 0x5
 
+// Weapon
+
+#define DEFAULT_ACCURACY 0.8
 
 // Utility
 

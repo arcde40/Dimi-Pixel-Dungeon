@@ -6,4 +6,4 @@
 #include "Item.h"
 #include "Player.h"
 
-void generateInventory(Player* p, wchar_t defaultBuffer[][189], WORD colorMap[][189], int cursorPosition);
+void generateInventory(Player* p, wchar_t defaultBuffer[][189], WORD colorMap[][189], int cursorPosition, int buttonCurPosition);

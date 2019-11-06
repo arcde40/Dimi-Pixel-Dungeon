@@ -55,6 +55,9 @@
     <Filter Include="헤더 파일\Core">
       <UniqueIdentifier>{ca3454de-f532-4170-b979-57c269221f2f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Item">
+      <UniqueIdentifier>{4e95f099-9b3b-4c42-a41f-05892d0d14db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -110,6 +113,9 @@
     </ClCompile>
     <ClCompile Include="PlayerGUI.c">
       <Filter>소스 파일\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.c">
+      <Filter>소스 파일\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

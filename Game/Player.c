@@ -3,7 +3,7 @@
 #include <math.h>
 
 bool attackAble(Player* p, MobInfo* info, MobList* list, LogArrayList* log) {
-	if (floor(sqrt( pow((p->playerX - info->posX),2) + pow((p->playerY - info->posY),2) )) <= p->equippedWeapon->attackRange) {
+	if (ABS(p->playerX - info->posX) <= p->equippedWeapon->attackRange && ABS(p->playerY - info->posY) <= p->equippedWeapon->attackRange) {
 		playerAttack(p, info, list, log);
 	}
 }

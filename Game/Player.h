@@ -10,6 +10,7 @@
 typedef struct Player {
 	int Health, maxHealth;
 	int playerX, playerY;
+	int prevPlayerX, prevPlayerY;
 	Item* inventory[16];
 	Item* equippedWeapon;
 	Item* equippedArmor;

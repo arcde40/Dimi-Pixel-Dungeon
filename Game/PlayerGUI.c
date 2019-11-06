@@ -1,10 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "PlayerGUI.h"
 
-// Y: 5 ~ 47 (Incorrect)
+// Y: 8 ~ 47 (Incorrect)
 // X: 57 ~
 
-void generateInventory(Player* p, wchar_t defaultBuffer[][189], WORD colorMap[][189], int cursorPosition) {
+void generateInventory(Player* p, wchar_t defaultBuffer[][189], WORD colorMap[][189], int cursorPosition, int buttonCurPosition) {
 	generatePopup(POPUP_CENTER, 40, 75, defaultBuffer, colorMap);
 	generatePopup(POPUP_CENTER, 40, 1, defaultBuffer, colorMap);
 	for (int i = 0; i < 16; i++) {
@@ -15,7 +15,8 @@ void generateInventory(Player* p, wchar_t defaultBuffer[][189], WORD colorMap[][
 				mbstowcs(star, "▶", strlen("▶"));
 				for (int j = offset; star[j - offset] != NULL; j++) {
 					defaultBuffer[8 + i * 2][j] = star[j - offset];
-					colorMap[8 + i * 2][j] = 97;
+					if(buttonCurPosition == 0) colorMap[8 + i * 2][j] = 97;
+					else colorMap[8 + i * 2][j] = 90;
 				}
 				offset += 3;
 			}
@@ -25,14 +26,20 @@ void generateInventory(Player* p, wchar_t defaultBuffer[][189], WORD colorMap[][
 			for (int j = offset; str[j-offset] != NULL; j++) {
 				defaultBuffer[8 + i * 2][j] = str[j-offset];
 				colorMap[8 + i * 2][j] = 97;
+		
 			}
 		}
 		else break;
 	}
 	if (cursorPosition >= 0 && p->inventory[cursorPosition] != NULL) {
+		int line = 0;
 		Item item = *p->inventory[cursorPosition];
 		wchar_t str[1000] = { 0, };
-		mbstowcs(str, item.lore, strlen(item.lore));
+		char temp[1000] = { 0, };
+		if (item.ITEM_TYPE == ITEM_WEAPON) sprintf(temp, "%s|||이 무기는 &e%d레벨 무기&f이며,|&e%d - %d 데미지&f를 입힐 수 있습니다.|%s%s%s%s", item.lore, item.level, item.minDamage, item.maxDamage, (item.accuarcy < DEFAULT_ACCURACY) ? "이 무기는 정확도가 떨어집니다.|" : "", (item.armor > 0) ? "이 무기는 일정 피해를 흡수할 수 있습니다.|" : "", (item.attackRange > 1)? "이 무기는 멀리 떨어진 적을 공격할 수 있습니다.|" : "", (item.attackSpeed < 1) ? "이 무기는 조금 더 빠르게 공격할 수 있습니다.|":"");
+		else if(item.ITEM_TYPE == ITEM_ARMOR) sprintf(temp, "%s|||이 방어구는 &e%d레벨 방어구&f이며,|&e%d - %d 데미지&f를 방어 할 수 있습니다.|%s", item.lore, item.level, item.minDamage, item.maxDamage, "");
+		else sprintf(temp, "%s", item.lore);
+		mbstowcs(str, temp, strlen(temp));
 		int scope = 0;
 		int offset = 0;
 		int currentColor = 97;
@@ -85,11 +92,62 @@ void generateInventory(Player* p, wchar_t defaultBuffer[][189], WORD colorMap[][
 				if (str[scope] != NULL) {
 					defaultBuffer[8 + i][96 + j] = str[scope++];
 					colorMap[8 + i][96 + j] = currentColor;
-
+					line = 96 + j;
 				}
-				else return;
+				else break;
 			}
 		}
+		
+
+		// Print Button
+
+		
+
+		// 96 ~ 131 ( +35 )
+
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 5; j++) {
+				for (int k = 0; k < 10; k++) {
+					if ((j != 0 && j != 4) && (k != 0 && k != 9)) continue;
+					defaultBuffer[37+j][96 + 10 * i + k + (2 * i)] = '#';
+					if (buttonCurPosition == i+1) colorMap[37 + j][96 + 10 * i + k + (2 * i)] = 93;
+					else colorMap[37 + j][96 + 10 * i + k + (2 * i)] = 97;
+				}
+			}
+		}
+
+		// 96 108 120
+		wchar_t str_1[100] = { 0, };
+		if (item.ITEM_TYPE == ITEM_WEAPON  || item.ITEM_TYPE == ITEM_ARMOR || item.ITEM_TYPE == ITEM_ACCESORY) {
+			mbstowcs(str_1, " 착용 ", strlen(" 착용 "));
+			for (int i = 0; i < 10; i++) {
+				if (str_1[i] != 0) {
+					defaultBuffer[39][98+i] = str_1[i];
+					if(buttonCurPosition == 1) colorMap[39][98+i] = 93;
+					else colorMap[39][98 + i] = 97;
+				}
+			}
+		}
+		else {
+			mbstowcs(str_1, " 사용 ", strlen(" 사용 "));
+			for (int i = 0; i < 10; i++) {
+				if (str_1[i] != 0) {
+					defaultBuffer[39][98 + i] = str_1[i];
+					if(buttonCurPosition == 1) colorMap[39][98 + i] = 93;
+					else colorMap[39][98 + i] = 97;
+				}
+			}
+		}
+		wchar_t str_2[100] = { 0, };
+		mbstowcs(str_2, "버리기", strlen("버리기"));
+		for (int i = 0; i < 10; i++) {
+			if (str_2[i] != 0) {
+				defaultBuffer[39][122 + i] = str_2[i];
+				if (buttonCurPosition == 3) colorMap[39][122 + i] = 93;
+				else colorMap[39][122 + i] = 97;
+			}
+		}
+
 	}
-	
+
 }

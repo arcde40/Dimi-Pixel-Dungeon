@@ -16,22 +16,11 @@ PointArrayList* enemyBehave(MobInfo* mobInfo, MobList* mobList, int playerX, int
 void moveMob(MobInfo* mobInfo, int playerX, int playerY, int map[][MAX_Y+MIN_Y], Player* p, int prevPlayerX, int prevPlayerY, LogArrayList* arr, MobList* mobList) {
 	if ((mobInfo->posX == playerX + 1 || mobInfo->posX == playerX || mobInfo->posX == playerX - 1) && (mobInfo->posY == playerY - 1 || mobInfo->posY == playerY || mobInfo->posY == playerY + 1)) mobAttack(p, mobInfo, arr);
 	else {
-		/*int offsetX, offsetY;
-		int topX=0, topY=0, topVal = 32767;
-		for (offsetX = -1; offsetX <= 1; offsetX++) {
-			for (offsetY = -1; offsetY <= 1; offsetY++) {
-				if (isPassable(map[mobInfo->posX + offsetX][mobInfo->posY + offsetY])) {
-					if (getH(prevPlayerX, prevPlayerY, mobInfo->posX + offsetX, mobInfo->posY + offsetY) < topVal) {
-						topVal = getH(prevPlayerX, prevPlayerY, mobInfo->posX + offsetX, mobInfo->posY + offsetY);
-						topX = offsetX; topY = offsetY;
-					}
-				}
-			}
-		}*/
-		PointArrayList* arr = findPath(map, mobInfo->posX, mobInfo->posY, prevPlayerX, prevPlayerY, mobList);
+		PointArrayList* arr = findPath(map, mobInfo->posX, mobInfo->posY, prevPlayerX, prevPlayerY, mobList, 5);
 		if(arr != NULL) {
 			POINT_P* p = getPoint(arr, arr->size-2);
-			mobInfo->posX = p->x; mobInfo->posY = p->y;
+			if(mobInfo->posX == p->x && mobInfo->posY == p->y) mobAttack(p, mobInfo, arr);
+			else mobInfo->posX = p->x; mobInfo->posY = p->y;
 		}
 	}
 }

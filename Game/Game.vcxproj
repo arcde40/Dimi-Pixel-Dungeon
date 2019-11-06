@@ -129,6 +129,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="InputHandler.c" />
+    <ClCompile Include="Item.c" />
     <ClCompile Include="lighting.c" />
     <ClCompile Include="LogArrayList.c" />
     <ClCompile Include="Logger.c" />
