@@ -130,6 +130,7 @@
     </ClCompile>
     <ClCompile Include="InputHandler.c" />
     <ClCompile Include="Item.c" />
+    <ClCompile Include="ItemArrayList.c" />
     <ClCompile Include="lighting.c" />
     <ClCompile Include="LogArrayList.c" />
     <ClCompile Include="Logger.c" />
@@ -151,6 +152,7 @@
     <ClInclude Include="GlobalVariable.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemArrayList.h" />
     <ClInclude Include="lighting.h" />
     <ClInclude Include="LogArrayList.h" />
     <ClInclude Include="Logger.h" />
@@ -162,9 +164,20 @@
     <ClInclude Include="PlayerGUI.h" />
     <ClInclude Include="pointarraylist.h" />
     <ClInclude Include="render.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="room.h" />
     <ClInclude Include="roomarraylist.h" />
     <ClInclude Include="struct.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Documents\콘솔게임 리소스\bmp\Floor.bmp" />
+    <Image Include="..\..\..\..\Documents\콘솔게임 리소스\bmp\Wall.bmp" />
+    <Image Include="..\..\..\..\Documents\콘솔게임 리소스\Unified.bmp" />
+    <Image Include="..\..\..\..\Documents\콘솔게임 리소스\Unified1.bmp" />
+    <Image Include="..\..\..\..\Documents\콘솔게임 리소스\Unified2.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

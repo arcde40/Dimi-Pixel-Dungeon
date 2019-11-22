@@ -4,16 +4,16 @@
 
 // Map
 
-#define MIN_ROOM_COUNT 10
-#define MAX_ROOM_COUNT 20
+#define MIN_ROOM_COUNT 4
+#define MAX_ROOM_COUNT 10
 #define MAX_ROOM_WEIGHT 15
 #define MAX_ROOM_HEIGHT 15
-#define MIN_ROOM_HEIGHT 7
-#define MIN_ROOM_WEIGHT 7
+#define MIN_ROOM_HEIGHT 8
+#define MIN_ROOM_WEIGHT 8
 #define MIN_X 20
 #define MIN_Y 20
-#define MAX_X 100
-#define MAX_Y 130
+#define MAX_X 60
+#define MAX_Y 60
 #define CORRIDOR_GENERATE_TRIES 40
 #define EXIT_GENERATE_TRIES 100
 #define MAP_Y_SIZE MIN_Y+MAX_Y
@@ -22,6 +22,8 @@
 #define MAP_X_END 45
 #define MAP_Y_START 6
 #define MAP_Y_END 128
+
+#define MAX_FLOOR 1
 
 // COLOR
 #define COLOR_BLACK 30
@@ -47,6 +49,7 @@
 // Other
 
 #define MAX_FRAME 10
+#define MOVING_FRAME 10
 
 // Render
 
@@ -73,7 +76,17 @@
 #define ITEM_ARMOR 0x3
 #define ITEM_FOOD 0x4
 #define ITEM_UTILITY 0x5
+#define ITEM_POTION 0x6
+#define ITEM_MISC 0x7
 
+// Item
+#define ITEM_STACKABLE 0x20
+#define ITEM_POTIONALLOCATED 0x1F
+#define ITEM_IDENTIFIABLE 0x40
+#define ITEM_UPGRADABLE 0x80
+#define ITEM_IDENTIFIED 0x100
+#define ITEM_CONSUMABLE 0x200
+#define NA -1
 // Weapon
 
 #define DEFAULT_ACCURACY 0.8
@@ -81,3 +94,5 @@
 // Utility
 
 #define	ABS(x)			( ((x)<0)?-(x):(x) )
+#define UPDATESIG updateSignal = true;
+#define CheckKeyPressed(x) (GetAsyncKeyState(x) && !keyInputState[x])

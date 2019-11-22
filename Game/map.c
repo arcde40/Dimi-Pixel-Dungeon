@@ -210,7 +210,7 @@ bool isOverlapping(int x, int y, MobList* mobList) {
 }
 
 bool isTransparent(int tile) {
-	if (tile == 2 || tile == 3 || tile == 4 || tile == 5 || tile == 11 || tile == 12 || tile == 13 || tile == 14 || tile == 15 || tile == 21 || tile == 22) return true;
+	if (tile == 2 || tile == 3 || tile == 4 || tile == 5 || tile == 11 || tile == 12 || tile == 13 || tile == 14 || tile == 15 || tile == 21 || tile == 22 || tile == 30 || tile == 31) return true;
 	return false;
 }
 
@@ -220,4 +220,98 @@ COORD getStartPos() {
 
 COORD getEndPos() {
 	return endPos;
+}
+
+/* Wall Variation
+*  0x10 - Wall
+*  + 0x11
+*  
+*/
+
+void BitMapMapper(int map[][MIN_Y + MAX_Y], int BitMapMapping[][MIN_Y + MAX_Y]) {
+	for (int i = MIN_X; i < MAX_X + MIN_X; i++) {
+		for (int j = MIN_Y; j < MIN_Y + MAX_Y; j++) {
+			if (map[i][j] == 1 && (map[i - 1][j] == 1 || map[i - 1][j] == 9) && (map[i + 1][j] == 1 || map[i + 1][j] == 9) && (map[i][j + 1] == 1 || map[i][j + 1] == 9) && (map[i][j - 1] == 1 || map[i][j - 1] == 9)) {
+				BitMapMapping[i][j] = 0x11; // +
+			}
+			else if (map[i][j] == 1 && (map[i - 1][j] != 1 && map[i - 1][j] != 9) && (map[i + 1][j] == 1 || map[i + 1][j] == 9) && (map[i][j + 1] == 1 || map[i][j + 1] == 9) && (map[i][j - 1] != 1 && map[i][j - 1] != 9)) {
+				BitMapMapping[i][j] = 0x12; // r
+			}
+			else if (map[i][j] == 1 && (map[i - 1][j] != 1 && map[i - 1][j] != 9) && (map[i + 1][j] != 1 && map[i + 1][j] != 9) && (map[i][j + 1] == 1 || map[i][j + 1] == 9) && (map[i][j - 1] == 1 || map[i][j - 1] == 9)) {
+				BitMapMapping[i][j] = 0x13; // -
+			}
+			else if (map[i][j] == 1 && (map[i - 1][j] != 1 && map[i - 1][j] != 9) && (map[i + 1][j] == 1 || map[i + 1][j] == 9) && (map[i][j + 1] != 1 && map[i][j + 1] != 9) && (map[i][j - 1] == 1 || map[i][j - 1] == 9)) {
+				BitMapMapping[i][j] = 0x14; // ¤¡
+			}
+			else if (map[i][j] == 1 && (map[i - 1][j] == 1 || map[i - 1][j] == 9) && (map[i + 1][j] == 1 || map[i + 1][j] == 9) && (map[i][j + 1] != 1 && map[i][j + 1] != 9) && (map[i][j - 1] != 1 && map[i][j - 1] != 9)) {
+				BitMapMapping[i][j] = 0x15; // l
+			}
+			else if (map[i][j] == 1 && (map[i - 1][j] == 1 || map[i - 1][j] == 9) && (map[i + 1][j] != 1 && map[i + 1][j] != 9) && (map[i][j + 1] == 1 || map[i][j + 1] == 9) && (map[i][j - 1] != 1 && map[i][j - 1] != 9)) {
+				BitMapMapping[i][j] = 0x16; // ¤¤
+			}
+			else if (map[i][j] == 1 && (map[i - 1][j] == 1 || map[i - 1][j] == 9) && (map[i + 1][j] != 1 && map[i + 1][j] != 9) && (map[i][j + 1] != 1 && map[i][j + 1] != 9) && (map[i][j - 1] == 1 || map[i][j - 1] == 9)) {
+				BitMapMapping[i][j] = 0x17; // j
+			}
+			else if (map[i][j] == 2 && map[i - 1][j] == 2 && map[i + 1][j] == 2 && map[i][j + 1] == 2 && map[i][j - 1] == 2) {
+				BitMapMapping[i][j] = 0x101; // ¤±
+			}
+			else if (map[i][j] == 2 && map[i - 1][j] != 2 && map[i + 1][j] == 2 && map[i][j + 1] == 2 && map[i][j - 1] != 2) {
+				BitMapMapping[i][j] = 0x102; // r
+			}
+			else if (map[i][j] == 2 && map[i - 1][j] != 2 && map[i + 1][j] == 2 && map[i][j + 1] != 2 && map[i][j - 1] == 2) {
+				BitMapMapping[i][j] = 0x103; // ¤¡
+			}
+			else if (map[i][j] == 2 && map[i - 1][j] == 2 && map[i + 1][j] != 2 && map[i][j + 1] != 2 && map[i][j - 1] == 2) {
+				BitMapMapping[i][j] = 0x104; // j
+			}
+			else if (map[i][j] == 2 && map[i - 1][j] == 2 && map[i + 1][j] != 2 && map[i][j + 1] == 2 && map[i][j - 1] != 2) {
+				BitMapMapping[i][j] = 0x105; // ¤¤
+			}
+			else if (map[i][j] == 2 && map[i - 1][j] == 2 && map[i + 1][j] == 2 && map[i][j + 1] != 2 && map[i][j - 1] == 2) {
+				BitMapMapping[i][j] = 0x106; // ¤Ó
+			}
+			else if (map[i][j] == 2 && map[i - 1][j] == 2 && map[i + 1][j] == 2 && map[i][j + 1] == 2 && map[i][j - 1] != 2) {
+				BitMapMapping[i][j] = 0x107; // l
+			}
+			else if (map[i][j] == 2 && map[i - 1][j] == 2 && map[i + 1][j] != 2 && map[i][j + 1] == 2 && map[i][j - 1] == 2) {
+				BitMapMapping[i][j] = 0x108; // _
+			}
+			else if (map[i][j] == 2 && map[i - 1][j] != 2 && map[i + 1][j] == 2 && map[i][j + 1] == 2 && map[i][j - 1] == 2) {
+				BitMapMapping[i][j] = 0x109; // -
+			}
+			else if (map[i][j] == 9 && map[i-1][j] == 1 && map[i+1][j] == 1) {
+				BitMapMapping[i][j] = 0x201; // Horizontal Door
+			}
+			else if (map[i][j] == 9 && map[i][j-1] == 1 && map[i][j+1] == 1) {
+				BitMapMapping[i][j] = 0x202; // Vertical Door
+			}
+			else if (map[i][j] == 21) {
+				BitMapMapping[i][j] = 0x300;
+			}
+			else if (map[i][j] == 22) {
+				BitMapMapping[i][j] = 0x301;
+			}
+			else if (map[i][j] == 4) {
+				BitMapMapping[i][j] = 0x401;
+			}
+			else if (map[i][j] == 5) {
+				BitMapMapping[i][j] = 0x402;
+			}
+			else if (map[i][j] == 11) {
+				BitMapMapping[i][j] = 0x403;
+			}
+			else if (map[i][j] == 12) {
+				BitMapMapping[i][j] = 0x404;
+			}
+			else if (map[i][j] == 13) {
+				BitMapMapping[i][j] = 0x405;
+			}
+			else if (map[i][j] == 14) {
+				BitMapMapping[i][j] = 0x406;
+			}
+			else if (map[i][j] == 15) {
+				BitMapMapping[i][j] = 0x407;
+			}
+		}
+	}
 }

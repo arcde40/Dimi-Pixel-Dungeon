@@ -16,3 +16,4 @@ bool isTransparent(int tile);
 bool isOverlapping(int x, int y, MobList* mobList);
 COORD getStartPos();
 COORD getEndPos();
+void BitMapMapper(int map[][MIN_Y + MAX_Y], int BitMapMapping[][MIN_Y + MAX_Y]);

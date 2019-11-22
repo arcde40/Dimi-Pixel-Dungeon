@@ -7,8 +7,8 @@
 void generateInventory(Player* p, wchar_t defaultBuffer[][189], WORD colorMap[][189], int cursorPosition, int buttonCurPosition) {
 	generatePopup(POPUP_CENTER, 40, 75, defaultBuffer, colorMap);
 	generatePopup(POPUP_CENTER, 40, 1, defaultBuffer, colorMap);
-	for (int i = 0; i < 16; i++) {
-		if (p->inventory[i] != NULL) {
+	for (int i = 0; i < p->inventory->size; i++) {
+		if (i < p->inventory->size) {
 			int offset = 60;
 			if (cursorPosition == i) {
 				wchar_t star[4] = { 0, };
@@ -20,24 +20,30 @@ void generateInventory(Player* p, wchar_t defaultBuffer[][189], WORD colorMap[][
 				}
 				offset += 3;
 			}
-			Item item = *p->inventory[i];
+			Item item = *getItem(p->inventory, i);
 			wchar_t str[100] = { 0, };
-			mbstowcs(str,  item.name , strlen(item.name));
+			char t[100] = { 0, };
+			if(item.amount == 1) sprintf(t, "%s", item.name);
+
+			else sprintf(t, "%s X %d", item.name, item.amount);
+			mbstowcs(str,  t , strlen(t));
 			for (int j = offset; str[j-offset] != NULL; j++) {
 				defaultBuffer[8 + i * 2][j] = str[j-offset];
-				colorMap[8 + i * 2][j] = 97;
+				if(!(item.metadata & ITEM_IDENTIFIED)) colorMap[8 + i * 2][j] = COLOR_MAGENTA;
+				else colorMap[8 + i * 2][j] = 97;
 		
 			}
 		}
-		else break;
+		else continue;
 	}
-	if (cursorPosition >= 0 && p->inventory[cursorPosition] != NULL) {
+	if (cursorPosition >= 0 && cursorPosition < p->inventory->size) {
 		int line = 0;
-		Item item = *p->inventory[cursorPosition];
+		Item item = *getItem(p->inventory, cursorPosition);
 		wchar_t str[1000] = { 0, };
 		char temp[1000] = { 0, };
-		if (item.ITEM_TYPE == ITEM_WEAPON) sprintf(temp, "%s|||이 무기는 &e%d레벨 무기&f이며,|&e%d - %d 데미지&f를 입힐 수 있습니다.|%s%s%s%s", item.lore, item.level, item.minDamage, item.maxDamage, (item.accuarcy < DEFAULT_ACCURACY) ? "이 무기는 정확도가 떨어집니다.|" : "", (item.armor > 0) ? "이 무기는 일정 피해를 흡수할 수 있습니다.|" : "", (item.attackRange > 1)? "이 무기는 멀리 떨어진 적을 공격할 수 있습니다.|" : "", (item.attackSpeed < 1) ? "이 무기는 조금 더 빠르게 공격할 수 있습니다.|":"");
-		else if(item.ITEM_TYPE == ITEM_ARMOR) sprintf(temp, "%s|||이 방어구는 &e%d레벨 방어구&f이며,|&e%d - %d 데미지&f를 방어 할 수 있습니다.|%s", item.lore, item.level, item.minDamage, item.maxDamage, "");
+		if (item.ITEM_TYPE == ITEM_WEAPON) sprintf(temp, "%s|||이 무기는 &e%d레벨 무기&f이며,|&e%d - %d 데미지&f를 입힐 수 있습니다.|%s%s%s%s%s", item.lore, item.level, item.minDamage, item.maxDamage, (item.accuarcy < DEFAULT_ACCURACY) ? "이 무기는 정확도가 떨어집니다.|" : "", (item.armor > 0) ? "이 무기는 일정 피해를 흡수할 수 있습니다.|" : "", (item.attackRange > 1)? "이 무기는 멀리 떨어진 적을 공격할 수 있습니다.|" : "", (item.attackSpeed < 1) ? "이 무기는 조금 더 빠르게 공격할 수 있습니다.|":"", (!(item.metadata & ITEM_IDENTIFIED) ? "|이 무기는 감정되지 않았습니다." : ""));
+		else if(item.ITEM_TYPE == ITEM_ARMOR) sprintf(temp, "%s|||이 방어구는 &e%d레벨 방어구&f이며,|&e%d - %d 데미지&f를 방어 할 수 있습니다.|%s%s", item.lore, item.level, item.minDamage, item.maxDamage, "");
+		else if (item.ITEM_TYPE == ITEM_POTION) sprintf(temp, "%s|%s", item.lore, (!(item.metadata & ITEM_IDENTIFIED) ? "|&8이 물약은 감정되지 않았습니다." : ""));
 		else sprintf(temp, "%s", item.lore);
 		mbstowcs(str, temp, strlen(temp));
 		int scope = 0;
@@ -149,5 +155,14 @@ void generateInventory(Player* p, wchar_t defaultBuffer[][189], WORD colorMap[][
 		}
 
 	}
+
+}
+
+void generateSkillWindow(Player* p, wchar_t defaultBuffer[][189], WORD colorMap[][189], int skillCursorPosition) {
+	generatePopup(POPUP_CENTER, 40, 80, defaultBuffer, colorMap);
+
+}
+
+void generateIndexWindow(Player* p, wchar_t defaultBuffer[][189], WORD colorMap[][189], int CategoryPosition, int subCategoryPosition) {
 
 }

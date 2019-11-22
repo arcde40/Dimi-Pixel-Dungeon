@@ -5,6 +5,7 @@
 #include "LogArrayList.h"
 
 typedef struct MobInfo {
+	int type;
 	int UUID;
 	char* name;
 	int Health;

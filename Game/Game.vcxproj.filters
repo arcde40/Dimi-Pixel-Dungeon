@@ -117,6 +117,9 @@
     <ClCompile Include="Item.c">
       <Filter>소스 파일\Item</Filter>
     </ClCompile>
+    <ClCompile Include="ItemArrayList.c">
+      <Filter>소스 파일\Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="struct.h">
@@ -176,5 +179,33 @@
     <ClInclude Include="PlayerGUI.h">
       <Filter>헤더 파일\Render</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemArrayList.h">
+      <Filter>헤더 파일\Util</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Documents\콘솔게임 리소스\bmp\Floor.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Documents\콘솔게임 리소스\bmp\Wall.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Documents\콘솔게임 리소스\Unified2.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Documents\콘솔게임 리소스\Unified.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Documents\콘솔게임 리소스\Unified1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
 </Project>

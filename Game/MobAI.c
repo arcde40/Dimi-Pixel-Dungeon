@@ -21,6 +21,7 @@ void moveMob(MobInfo* mobInfo, int playerX, int playerY, int map[][MAX_Y+MIN_Y],
 			POINT_P* p = getPoint(arr, arr->size-2);
 			if(mobInfo->posX == p->x && mobInfo->posY == p->y) mobAttack(p, mobInfo, arr);
 			else mobInfo->posX = p->x; mobInfo->posY = p->y;
+			free(arr);
 		}
 	}
 }
@@ -29,6 +30,10 @@ void mobAttack(Player* p, MobInfo* mob, LogArrayList* arr) {
 	int damage;
 	if (mob->minDamage == mob->maxDamage) damage = mob->minDamage;
 	else damage = (rand() % (mob->maxDamage - mob->minDamage)) + mob->minDamage;
+	if (damage <= p->equippedArmor->armor) damage = 1;
+	else damage -= p->equippedArmor->armor;
+	if (damage <= p->equippedWeapon->armor) damage = 1;
+	else damage -= p->equippedWeapon->armor;
 	p->Health -= damage;
 	char t[100] = { 0, };
 	sprintf(t, "%s으로부터 %d 데미지를 입었다!", mob->name, damage);
