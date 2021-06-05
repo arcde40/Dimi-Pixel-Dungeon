@@ -1,4 +1,4 @@
-#ifndef ROOM_HEADER
+﻿#ifndef ROOM_HEADER
 #define ROOM_HEADER
 #include "arraylist.h"
 

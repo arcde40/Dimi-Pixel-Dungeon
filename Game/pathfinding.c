@@ -1,13 +1,7 @@
-#include "pointarraylist.h"
-#include "struct.h"
-#include "map.h"
-#include "render.h"
-#include <stdio.h>
-#include <math.h>
-
+﻿#include "pathfinding.h"
 
 POINT_P* pointer[MAX_X + MIN_X][MAX_Y + MIN_Y] = { 0, };
-
+// 버블 정렬을 시행합니다.
 void sort(PointArrayList* array, int f[][MAX_Y + MIN_Y]) {
 	 int flag = 1;
 	while (flag) {
@@ -22,11 +16,11 @@ void sort(PointArrayList* array, int f[][MAX_Y + MIN_Y]) {
 		}
 	}
 }
-
+// A* 알고리즘의 H값을 계산합니다.
 int getH(int x1, int y1, int x2, int y2) {
 	return abs(x1 - x2) + abs(y1 - y2);
 }
-
+// 맵을 복사합니다. (Deprecated)
 void cpyMap(int target[][MIN_Y+MAX_Y], int to[][MIN_Y+MAX_Y]) {
 	for (int i = 0; i < MAX_X + MIN_X; i++) {
 		for (int j = 0; j < MAX_Y + MIN_Y; j++) {
@@ -35,12 +29,13 @@ void cpyMap(int target[][MIN_Y+MAX_Y], int to[][MIN_Y+MAX_Y]) {
 	}
 }
 
-
-PointArrayList* findPath(int map[][MIN_Y + MAX_Y], int startPosX, int startPosY, int endPosX, int endPosY) {
+// 길을 찾습니다.
+PointArrayList* findPath(int map[][MIN_Y + MAX_Y], int startPosX, int startPosY, int endPosX, int endPosY, MobList* mobList, int step) {
 	/*
 	* Debug Property
 	* 40 OpenList 41 ClosedList
 	*/
+	int t = 0;
 	//int temp[MAX_X+MIN_X][MIN_Y + MAX_Y] = { 0, };
 	//cpyMap(map, temp); 
 	//char tempBuffer[49][189] = { 0, };
@@ -58,6 +53,7 @@ PointArrayList* findPath(int map[][MIN_Y + MAX_Y], int startPosX, int startPosY,
 	//point->pointX = startPosX; point->y = startPosY;
 	putPoint(openList, point);
 	do {
+		if (step > 0 && t++ == step) break;
 		sort(openList, f);
 		// Exception Handling
 
@@ -87,7 +83,7 @@ PointArrayList* findPath(int map[][MIN_Y + MAX_Y], int startPosX, int startPosY,
 					}
 					
 
-					if (isPassable(map[currentX + i][currentY + j]) && t == -1) {
+					if (!isOverlapping(currentX + i , currentY + j, mobList) && isPassable(map[currentX + i][currentY + j]) && t == -1) {
 						if (f[currentX + i][currentY + j] == 0) {
 							h[currentX + i][currentY + j] = getH(currentX + i, currentY + j, endPosX, endPosY);
 							g[currentX + i][currentY + j] = g[currentX][currentY] + 1;

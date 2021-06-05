@@ -1,8 +1,8 @@
-#include "map.h"
+﻿#include "map.h"
 
 COORD startPos = { 0,0 };
 COORD endPos = { 0,0 };
-
+// 생성된 방들의 정보를 가지고 map 배열에 옮깁니다. 부자연스러운 방들의 배치 또한 조정합니다.
 void draw(int map[][MIN_Y+MAX_Y], RoomArrayList* arr) {
 	srand(time(NULL));
 	for (int x = 0; x < arr->size; x++) {
@@ -197,20 +197,124 @@ void draw(int map[][MIN_Y+MAX_Y], RoomArrayList* arr) {
 	map[x2][y2] = 22;
 }
 
+
+// 타일이 지나갈 수 있는 타일인지를 반환합니다.
 bool isPassable(int tile) {
-	if (tile == 2 || tile == 3 || tile == 4 || tile == 5 || tile == 9 || tile == 11 || tile == 12 || tile == 13 || tile == 14 || tile == 15) return true;
+	if (tile == 2 || tile == 3 || tile == 4 || tile == 5 || tile == 9 || tile == 11 || tile == 12 || tile == 13 || tile == 14 || tile == 15 || tile == 21 || tile == 22) return true;
 	return false;
 }
 
+// 해당 좌표에 몹이 이미 있는지를 반환합니다.
+bool isOverlapping(int x, int y, MobList* mobList) {
+	for (int i = 0; i < mobList->size; i++) {
+		if (getMobInfo(mobList, i)->posX == x && getMobInfo(mobList, i)->posY == y) return true;
+	}
+	return false;
+}
+// 해당 타일이 투명한지를 반환합니다. (투명하지 않을 시 시야가 가로막힙니다.)
 bool isTransparent(int tile) {
-	if (tile == 2 || tile == 3 || tile == 4 || tile == 5 || tile == 11 || tile == 12 || tile == 13 || tile == 14 || tile == 15 || tile == 21 || tile == 22) return true;
+	if (tile == 2 || tile == 3 || tile == 4 || tile == 5 || tile == 11 || tile == 12 || tile == 13 || tile == 14 || tile == 15 || tile == 21 || tile == 22 || tile == 30 || tile == 31) return true;
 	return false;
 }
-
+// 시작 계단의 주소를 반환합니다.
 COORD getStartPos() {
 	return startPos;
 }
-
+// 내려가는 계단의 주소를 반환합니다.
 COORD getEndPos() {
 	return endPos;
+}
+
+/* Wall Variation
+*  0x10 - Wall
+*  + 0x11
+*  
+*/
+// 비트맵 처리와 관련된 함수입니다. 미구현.
+void BitMapMapper(int map[][MIN_Y + MAX_Y], int BitMapMapping[][MIN_Y + MAX_Y]) {
+	for (int i = MIN_X; i < MAX_X + MIN_X; i++) {
+		for (int j = MIN_Y; j < MIN_Y + MAX_Y; j++) {
+			if (map[i][j] == 1 && (map[i - 1][j] == 1 || map[i - 1][j] == 9) && (map[i + 1][j] == 1 || map[i + 1][j] == 9) && (map[i][j + 1] == 1 || map[i][j + 1] == 9) && (map[i][j - 1] == 1 || map[i][j - 1] == 9)) {
+				BitMapMapping[i][j] = 0x11; // +
+			}
+			else if (map[i][j] == 1 && (map[i - 1][j] != 1 && map[i - 1][j] != 9) && (map[i + 1][j] == 1 || map[i + 1][j] == 9) && (map[i][j + 1] == 1 || map[i][j + 1] == 9) && (map[i][j - 1] != 1 && map[i][j - 1] != 9)) {
+				BitMapMapping[i][j] = 0x12; // r
+			}
+			else if (map[i][j] == 1 && (map[i - 1][j] != 1 && map[i - 1][j] != 9) && (map[i + 1][j] != 1 && map[i + 1][j] != 9) && (map[i][j + 1] == 1 || map[i][j + 1] == 9) && (map[i][j - 1] == 1 || map[i][j - 1] == 9)) {
+				BitMapMapping[i][j] = 0x13; // -
+			}
+			else if (map[i][j] == 1 && (map[i - 1][j] != 1 && map[i - 1][j] != 9) && (map[i + 1][j] == 1 || map[i + 1][j] == 9) && (map[i][j + 1] != 1 && map[i][j + 1] != 9) && (map[i][j - 1] == 1 || map[i][j - 1] == 9)) {
+				BitMapMapping[i][j] = 0x14; // ㄱ
+			}
+			else if (map[i][j] == 1 && (map[i - 1][j] == 1 || map[i - 1][j] == 9) && (map[i + 1][j] == 1 || map[i + 1][j] == 9) && (map[i][j + 1] != 1 && map[i][j + 1] != 9) && (map[i][j - 1] != 1 && map[i][j - 1] != 9)) {
+				BitMapMapping[i][j] = 0x15; // l
+			}
+			else if (map[i][j] == 1 && (map[i - 1][j] == 1 || map[i - 1][j] == 9) && (map[i + 1][j] != 1 && map[i + 1][j] != 9) && (map[i][j + 1] == 1 || map[i][j + 1] == 9) && (map[i][j - 1] != 1 && map[i][j - 1] != 9)) {
+				BitMapMapping[i][j] = 0x16; // ㄴ
+			}
+			else if (map[i][j] == 1 && (map[i - 1][j] == 1 || map[i - 1][j] == 9) && (map[i + 1][j] != 1 && map[i + 1][j] != 9) && (map[i][j + 1] != 1 && map[i][j + 1] != 9) && (map[i][j - 1] == 1 || map[i][j - 1] == 9)) {
+				BitMapMapping[i][j] = 0x17; // j
+			}
+			else if (map[i][j] == 2 && map[i - 1][j] == 2 && map[i + 1][j] == 2 && map[i][j + 1] == 2 && map[i][j - 1] == 2) {
+				BitMapMapping[i][j] = 0x101; // ㅁ
+			}
+			else if (map[i][j] == 2 && map[i - 1][j] != 2 && map[i + 1][j] == 2 && map[i][j + 1] == 2 && map[i][j - 1] != 2) {
+				BitMapMapping[i][j] = 0x102; // r
+			}
+			else if (map[i][j] == 2 && map[i - 1][j] != 2 && map[i + 1][j] == 2 && map[i][j + 1] != 2 && map[i][j - 1] == 2) {
+				BitMapMapping[i][j] = 0x103; // ㄱ
+			}
+			else if (map[i][j] == 2 && map[i - 1][j] == 2 && map[i + 1][j] != 2 && map[i][j + 1] != 2 && map[i][j - 1] == 2) {
+				BitMapMapping[i][j] = 0x104; // j
+			}
+			else if (map[i][j] == 2 && map[i - 1][j] == 2 && map[i + 1][j] != 2 && map[i][j + 1] == 2 && map[i][j - 1] != 2) {
+				BitMapMapping[i][j] = 0x105; // ㄴ
+			}
+			else if (map[i][j] == 2 && map[i - 1][j] == 2 && map[i + 1][j] == 2 && map[i][j + 1] != 2 && map[i][j - 1] == 2) {
+				BitMapMapping[i][j] = 0x106; // ㅣ
+			}
+			else if (map[i][j] == 2 && map[i - 1][j] == 2 && map[i + 1][j] == 2 && map[i][j + 1] == 2 && map[i][j - 1] != 2) {
+				BitMapMapping[i][j] = 0x107; // l
+			}
+			else if (map[i][j] == 2 && map[i - 1][j] == 2 && map[i + 1][j] != 2 && map[i][j + 1] == 2 && map[i][j - 1] == 2) {
+				BitMapMapping[i][j] = 0x108; // _
+			}
+			else if (map[i][j] == 2 && map[i - 1][j] != 2 && map[i + 1][j] == 2 && map[i][j + 1] == 2 && map[i][j - 1] == 2) {
+				BitMapMapping[i][j] = 0x109; // -
+			}
+			else if (map[i][j] == 9 && map[i-1][j] == 1 && map[i+1][j] == 1) {
+				BitMapMapping[i][j] = 0x201; // Horizontal Door
+			}
+			else if (map[i][j] == 9 && map[i][j-1] == 1 && map[i][j+1] == 1) {
+				BitMapMapping[i][j] = 0x202; // Vertical Door
+			}
+			else if (map[i][j] == 21) {
+				BitMapMapping[i][j] = 0x300;
+			}
+			else if (map[i][j] == 22) {
+				BitMapMapping[i][j] = 0x301;
+			}
+			else if (map[i][j] == 4) {
+				BitMapMapping[i][j] = 0x401;
+			}
+			else if (map[i][j] == 5) {
+				BitMapMapping[i][j] = 0x402;
+			}
+			else if (map[i][j] == 11) {
+				BitMapMapping[i][j] = 0x403;
+			}
+			else if (map[i][j] == 12) {
+				BitMapMapping[i][j] = 0x404;
+			}
+			else if (map[i][j] == 13) {
+				BitMapMapping[i][j] = 0x405;
+			}
+			else if (map[i][j] == 14) {
+				BitMapMapping[i][j] = 0x406;
+			}
+			else if (map[i][j] == 15) {
+				BitMapMapping[i][j] = 0x407;
+			}
+		}
+	}
 }

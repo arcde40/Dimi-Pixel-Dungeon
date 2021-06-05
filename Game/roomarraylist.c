@@ -1,7 +1,7 @@
-#include "roomarraylist.h"
+﻿#include "roomarraylist.h"
 #include "room.h"
 #include <stdlib.h>
-
+/* ArrayList.c 와 함수의 기능이 완전히 같습니다. */
 RoomArrayList* initRoomArray() {
 	RoomArrayList* r = (RoomArrayList *) malloc(sizeof(struct RoomArrayList));
 	r->size = 0;

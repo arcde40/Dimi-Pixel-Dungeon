@@ -1,5 +1,7 @@
-#include <Windows.h>
+﻿#include <Windows.h>
 #include "InputHandler.h"
+
+// 마우스 입력을 받습니다.
 int get_input(WORD *vkey, COORD *pos, HANDLE COUT, HANDLE CIN)
 {
 	INPUT_RECORD input_record;

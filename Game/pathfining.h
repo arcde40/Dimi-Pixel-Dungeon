@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "pointarraylist.h"
 #include "GlobalVariable.h"
 

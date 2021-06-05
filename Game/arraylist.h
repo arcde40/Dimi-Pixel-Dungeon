@@ -1,4 +1,4 @@
-#ifndef ARRAY_HEADER
+﻿#ifndef ARRAY_HEADER
 #define ARRAY_HEADER
 #include <stdbool.h>
 

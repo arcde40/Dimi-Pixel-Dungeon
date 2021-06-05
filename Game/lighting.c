@@ -1,5 +1,6 @@
-#include "lighting.h"
+ï»¿#include "lighting.h"
 
+// ê¸°ë³¸ ë¼ì´íŒ…ì…ë‹ˆë‹¤. ëª¨ë‘ í•˜ì–€ìƒ‰ìœ¼ë¡œ ì´ˆê¸°í™”í•©ë‹ˆë‹¤.
 void defaultLighting(WORD colorMap[][189]) {
 	for (int i = 0; i < 49; i++) {
 		for (int j = 0; j < 189; j++) {
@@ -8,6 +9,7 @@ void defaultLighting(WORD colorMap[][189]) {
 	}
 }
 
+// ë§µì˜ FOVë¥¼ êµ¬í˜„í•˜ëŠ” ì¤‘ì¶” í•¨ìˆ˜ì…ë‹ˆë‹¤. (Deprecated)
 void mapLighting(int playerX, int playerY, int renderRange, WORD colorMap[][189], int map[][MAX_Y+MIN_Y], bool visitMap[][MAX_Y+MIN_Y]) {
 	for (int i = MAP_X_START; i < MAP_X_END; i++) {
 		for (int j = MAP_Y_START; j < MAP_Y_END-1; j++) {
@@ -27,11 +29,15 @@ void mapLighting(int playerX, int playerY, int renderRange, WORD colorMap[][189]
 	}
 }
 
-void applyColor(WORD* colorMap, char* buffer, char* appliedBuffer) {
+// colorMapì— ë”°ë¼ ê¸€ìì— ìƒ‰ì„ ì…í™ë‹ˆë‹¤.
+void applyColor(WORD* colorMap, wchar_t* buffer, wchar_t* appliedBuffer) {
 	for (int i = 0; i < 189 * 5; i++) appliedBuffer[i] = 0;
 	int prev = -1, scope = 0;
 	for (int i = 0; i < 189; i++) {
 		if (prev != colorMap[i]) {
+			if (colorMap[i] > 97) {
+				colorMap[i] = 97;
+			}
 			prev = colorMap[i];
 			appliedBuffer[scope++] = '\x1b';
 			appliedBuffer[scope++] = '[';
@@ -46,25 +52,25 @@ void applyColor(WORD* colorMap, char* buffer, char* appliedBuffer) {
 	}
 }
 
-/* ¶óÀÌÆÃ ±â¹ı
-* ÇÃ·¹ÀÌ¾î ÁÖÀ§·Î ¿øÀ» ±×¸²
-* ÇÃ·¹ÀÌ¾î ÁÂÇ¥ (x1,y2)¿Í ¿ø À§ÀÇ Á¡ (xi, yi)¸¦ ÀÕ´Â Á÷¼±À» ±×¸²
-* Á÷¼±À» µû¶ó »ö»óÀ» º¯È¯ÇÏ´Ù°¡ Àå¾Ö¹°À» ¸¸³ª¸é Å½»ö Á¾·á.
+/* ë¼ì´íŒ… ê¸°ë²•
+* í”Œë ˆì´ì–´ ì£¼ìœ„ë¡œ ì›ì„ ê·¸ë¦¼
+* í”Œë ˆì´ì–´ ì¢Œí‘œ (x1,y2)ì™€ ì› ìœ„ì˜ ì  (xi, yi)ë¥¼ ì‡ëŠ” ì§ì„ ì„ ê·¸ë¦¼
+* ì§ì„ ì„ ë”°ë¼ ìƒ‰ìƒì„ ë³€í™˜í•˜ë‹¤ê°€ ì¥ì• ë¬¼ì„ ë§Œë‚˜ë©´ íƒìƒ‰ ì¢…ë£Œ.
 */
 
 /*
-	½ÇÁ¦ ÁÖ¼Ò: ÄÜ¼ÖÃ¢ÀÇ Àı´ë ÁÂÇ¥
-	°¡»ó ÁÖ¼Ò: ¸Ê»óÀÇ Àı´ë ÁÂÇ¥
+	ì‹¤ì œ ì£¼ì†Œ: ì½˜ì†”ì°½ì˜ ì ˆëŒ€ ì¢Œí‘œ
+	ê°€ìƒ ì£¼ì†Œ: ë§µìƒì˜ ì ˆëŒ€ ì¢Œí‘œ
 
-	½ÇÁ¦ ÁÖ¼Ò(25,66)¿¡ °¡»ó ÁÖ¼Ò (ÇÃ·¹ÀÌ¾î x°ª, ÇÃ·¹ÀÌ¾î y°ª)ÀÌ ´ëÀÀµÊ. µû¶ó¼­
-	°¡»óÁÖ¼Ò = (ÇÃ·¹ÀÌ¾î x°ª + ½ÇÁ¦ ÁÖ¼ÒÀÇ x°ª - 25, ÇÃ·¹ÀÌ¾î y°ª + ½ÇÁ¦ ÁÖ¼ÒÀÇ y°ª - 66)
-	½ÇÁ¦ÁÖ¼Ò = (°¡»óÁÖ¼Ò x°ª + 25 - ÇÃ·¹ÀÌ¾î x°ª, °¡»óÁÖ¼Ò y°ª + 66 - ÇÃ·¹ÀÌ¾î y°ª)
+	ì‹¤ì œ ì£¼ì†Œ(25,66)ì— ê°€ìƒ ì£¼ì†Œ (í”Œë ˆì´ì–´ xê°’, í”Œë ˆì´ì–´ yê°’)ì´ ëŒ€ì‘ë¨. ë”°ë¼ì„œ
+	ê°€ìƒì£¼ì†Œ = (í”Œë ˆì´ì–´ xê°’ + ì‹¤ì œ ì£¼ì†Œì˜ xê°’ - 25, í”Œë ˆì´ì–´ yê°’ + ì‹¤ì œ ì£¼ì†Œì˜ yê°’ - 66)
+	ì‹¤ì œì£¼ì†Œ = (ê°€ìƒì£¼ì†Œ xê°’ + 25 - í”Œë ˆì´ì–´ xê°’, ê°€ìƒì£¼ì†Œ yê°’ + 66 - í”Œë ˆì´ì–´ yê°’)
 
 
 */
-
-void mapLighting1(int playerX, int playerY, int renderRange, WORD colorMap[][189], int map[][MAX_Y+MIN_Y], bool visitMap[][MAX_Y + MIN_Y]) {
-	defaultLighting(colorMap);
+// FOVë¥¼ êµ¬í˜„í•©ë‹ˆë‹¤.
+void mapLighting1(int playerX, int playerY, int renderRange, WORD colorMap[][189], int map[][MAX_Y+MIN_Y], bool visitMap[][MAX_Y + MIN_Y], GameComponent* g) {
+	//defaultLighting(colorMap);
 	drawCircle(renderRange, playerX, playerY, colorMap, map, visitMap);
 	for (int i = MAP_X_START; i < MAP_X_END; i++) {
 		for (int j = MAP_Y_START; j < MAP_Y_END; j++) {
@@ -72,11 +78,32 @@ void mapLighting1(int playerX, int playerY, int renderRange, WORD colorMap[][189
 				if (visitMap[playerX + i - 25][playerY + j - 66]) colorMap[i][j] = COLOR_BRIGHT_BLACK;
 				else colorMap[i][j] = COLOR_BLACK;
 			}
-			else colorMap[i][j] -= 1;
+			else {
+				switch (map[playerX + i - 25][playerY + j - 66]) {
+				case 30: colorMap[i][j] = COLOR_YELLOW; break;
+				case 31: colorMap[i][j] = COLOR_RED; break;
+				default: colorMap[i][j] = COLOR_BRIGHT_WHITE; break;
+				}
+			}
+		}
+	}
+
+	if (g->player->debuff[1] >= 0) {
+		for (int i = 0; i < g->mobList->size; i++) {
+			MobInfo* mob = getMobInfo(g->mobList, i);
+			if (mob->posX - playerX + 25 >= MAP_X_START && mob->posX - playerX + 25 <= MAP_X_END && mob->posY - playerY + 66 >= MAP_Y_START && mob->posY - playerY + 66 <= MAP_Y_END) {
+				for (int i = -1; i <= 1; i++) {
+					for (int j = -1; j <= 1; j++) {
+						colorMap[mob->posX - playerX + 25 + i][mob->posY - playerY + 66 + j] = COLOR_BRIGHT_WHITE;
+						visitMap[mob->posX - playerX + 25 + i][mob->posY - playerY + 66 + j] = true;
+					}
+				}
+			}
 		}
 	}
 }
 
+// Ray-Castingì„ êµ¬í˜„í•©ë‹ˆë‹¤.
 void plotLine(int x1, int y1, int x2, int y2, WORD colorMap[][189], int map[][MAX_Y + MIN_Y], int playerX, int playerY, bool visitMap[][MAX_Y + MIN_Y]) {
 	if (ABS(y2 - y1) < ABS(x2 - x1)) {
 		// Drawing ( -1 <= M <= 1 ) Line
@@ -91,7 +118,8 @@ void plotLine(int x1, int y1, int x2, int y2, WORD colorMap[][189], int map[][MA
 			for (int x = x1; x > x2; x--) { 
 				// Process Start
 				if (x < 0 || y < 0 || x > MAX_X + MIN_X || y > MAX_Y + MIN_Y) return;
-				//if (x - playerX < MAP_X_START - 25 || x - playerX > MAP_X_END + 25 || y - playerY < MAP_Y_START - 66 || y - playerY > MAP_Y_END + 66) return;
+				if (x - playerX < MAP_X_START - 25 || x - playerX > MAP_X_END + 25 || y - playerY < MAP_Y_START - 66 || y - playerY > MAP_Y_END + 66) return;
+				if (x - playerX + 25 >= 49 || y - playerY >= 189) return;
 				visitMap[x][y] = true;
 				colorMap[x - playerX + 25][y - playerY + 66] = COLOR_CHECKED; //COLOR_BRIGHT_YELLOW;
 				if (!isTransparent(map[x][y])) return;
@@ -107,7 +135,8 @@ void plotLine(int x1, int y1, int x2, int y2, WORD colorMap[][189], int map[][MA
 			for (int x = x1; x < x2; x++) {
 				// Process Start
 				if (x < 0 || y < 0 || x > MAX_X + MIN_X || y > MAX_Y + MIN_Y) return;
-				//if (x - playerX < MAP_X_START - 25 || x - playerX > MAP_X_END + 25 || y - playerY < MAP_Y_START - 66 || y - playerY > MAP_Y_END + 66) return;
+				if (x - playerX < MAP_X_START - 25 || x - playerX > MAP_X_END + 25 || y - playerY < MAP_Y_START - 66 || y - playerY > MAP_Y_END + 66) return;
+				if (x - playerX + 25 >= 49 || y - playerY >= 189) return;
 				visitMap[x][y] = true;
 				colorMap[x - playerX + 25][y - playerY + 66] = COLOR_CHECKED; //COLOR_BRIGHT_GREEN;
 				if (!isTransparent(map[x][y])) return;
@@ -134,7 +163,8 @@ void plotLine(int x1, int y1, int x2, int y2, WORD colorMap[][189], int map[][MA
 			for (int y = y1; y > y2; y--) {
 				// Process Start
 				if (x < 0 || y < 0 || x > MAX_X + MIN_X || y > MAX_Y + MIN_Y) return;
-				//if (x - playerX < MAP_X_START - 25 || x - playerX > MAP_X_END + 25 || y - playerY < MAP_Y_START - 66 || y - playerY > MAP_Y_END + 66) return;
+				if (x - playerX < MAP_X_START - 25 || x - playerX > MAP_X_END + 25 || y - playerY < MAP_Y_START - 66 || y - playerY > MAP_Y_END + 66) return;
+				if (x - playerX + 25 >= 49 || y - playerY >= 189) return;
 				visitMap[x][y] = true;
 				colorMap[x - playerX + 25][y - playerY + 66] = COLOR_CHECKED; //COLOR_BRIGHT_RED;
 				if (!isTransparent(map[x][y])) return;
@@ -151,7 +181,8 @@ void plotLine(int x1, int y1, int x2, int y2, WORD colorMap[][189], int map[][MA
 			for (int y = y1; y < y2; y++) {
 				// Process Start
 				if (x < 0 || y < 0 || x > MAX_X + MIN_X || y > MAX_Y + MIN_Y) return;
-				//if (x - playerX < MAP_X_START - 25 || x - playerX > MAP_X_END + 25 || y - playerY < MAP_Y_START - 66 || y - playerY > MAP_Y_END + 66) return;
+				if (x - playerX < MAP_X_START - 25 || x - playerX > MAP_X_END + 25 || y - playerY < MAP_Y_START - 66 || y - playerY > MAP_Y_END + 66) return;
+				if (x - playerX + 25 >= 49 || y - playerY >= 189) return;
 				visitMap[x][y] = true;
 				colorMap[x - playerX + 25][y - playerY + 66] = COLOR_CHECKED; //COLOR_BRIGHT_BLUE;
 				
@@ -168,6 +199,7 @@ void plotLine(int x1, int y1, int x2, int y2, WORD colorMap[][189], int map[][MA
 	}
 }
 
+// í”Œë ˆì´ì–´ ê¸°ì¤€ìœ¼ë¡œ ë°˜ì§€ë¦„ì´ Rì¸ ì›ì„ ê·¸ë¦½ë‹ˆë‹¤.
 void drawCircle(int R, int playerX, int playerY, WORD colorMap[][189], int map[][MAX_Y+MIN_Y], bool visitMap[][MAX_Y+MIN_Y]) {
 	int x = 0, y = R;
 	
@@ -182,15 +214,15 @@ void drawCircle(int R, int playerX, int playerY, WORD colorMap[][189], int map[]
 	// SE(first) = 2*xp - 2 *yp + 5 = 2 * 0 - 2 * R + 5 = 2 * R + 5
 	int deltaSE = -2 * R + 5;
 
-	// ÆÇº°½Ä
+	// íŒë³„ì‹
 	int D = 1 - R;
-	while (y > x) { // 2¹øÂ° Octant±îÁö : 1¹øÂ° Octant·Î ³Ñ¾î°¡¸é y > x°¡ µÊ.
-		if (D < 0) { // Midpoint°¡ ¿ø ¾ÈÀÇ Á¡ (E ¼±ÅÃ)
-			D += deltaE; // ÆÇº°½Ä¿¡ deltaE Áõ°¡
+	while (y > x) { // 2ë²ˆì§¸ Octantê¹Œì§€ : 1ë²ˆì§¸ Octantë¡œ ë„˜ì–´ê°€ë©´ y > xê°€ ë¨.
+		if (D < 0) { // Midpointê°€ ì› ì•ˆì˜ ì  (E ì„ íƒ)
+			D += deltaE; // íŒë³„ì‹ì— deltaE ì¦ê°€
 			deltaE += 2; // deltaE = Ep+1 - Ep = (2*(xp+1) + 3) - (2*xp + 3) = 2xp + 2 + 3 - 2*xp - 3 = 2
 			deltaSE += 4; // deltaSE = SEp+1 - SEp = (2*xp+1 - 2*yp+1 + 5) - (2*xp - 2yp + 5) = 2*xp + 2 - 2*yp + 2 + 5 - 2*xp +2*yp - 5 = 4
 		}
-		else { // MidPoint°¡ ¿ø À§³ª ¿ø ¹ÛÀÇ Á¡ (SE ¼±ÅÃ)
+		else { // MidPointê°€ ì› ìœ„ë‚˜ ì› ë°–ì˜ ì  (SE ì„ íƒ)
 			D += deltaSE;
 			deltaE += 2;
 			deltaSE += 4;
@@ -209,7 +241,7 @@ void drawCircle(int R, int playerX, int playerY, WORD colorMap[][189], int map[]
 	}
 }
 
-
+// ì œê³±ì…ë‹ˆë‹¤. (Deprecated)
 int sqaure(int a) {
 	return a * a;
 }

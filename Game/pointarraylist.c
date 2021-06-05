@@ -1,5 +1,6 @@
-#include <stdbool.h>
+﻿#include <stdbool.h>
 #include "pointarraylist.h"
+/* ArrayList.c 와 함수의 기능이 완전히 같습니다. */
 PointArrayList* initPointArray() {
 	PointArrayList* r = (PointArrayList *)malloc(sizeof(struct PointArrayList));
 	r->size = 0;
@@ -27,5 +28,6 @@ void removePoint(PointArrayList* arr, int index) {
 }
 
 POINT_P* getPoint(PointArrayList* arr, int idx) {
+	if (arr == NULL) return NULL;
 	return arr->data[idx];
 }

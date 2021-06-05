@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+Ôªø#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 
@@ -7,13 +7,20 @@
 #define SIZE 101
 #define RANGE 50
 
+
+
+// Ïù¥ ÏÜåÏä§Îäî ÌÖåÏä§Ìä∏Ïö©Ïù¥Îãà Í∞ÄÎøêÌïòÍ≤å ÎÑòÏñ¥Í∞ÄÏ£ºÏÑ∏Ïöî.
+
+
+
+
 int main() {
 	char table[10][10] = { 0, };
 	
 	int x1, y1, x2, y2;
-	printf("√ππ¯¬∞ ¡¬«•∏¶ ¿‘∑¬«œººø‰: ");
+	printf("Ï≤´Î≤àÏß∏ Ï¢åÌëúÎ•º ÏûÖÎ†•ÌïòÏÑ∏Ïöî: ");
 	scanf("%d %d", &x1, &y1);
-	printf("µŒπ¯¬∞ ¡¬«•∏¶ ¿‘∑¬«œººø‰: ");
+	printf("ÎëêÎ≤àÏß∏ Ï¢åÌëúÎ•º ÏûÖÎ†•ÌïòÏÑ∏Ïöî: ");
 	scanf("%d %d", &x2, &y2);
 	printf("\n");
 
@@ -155,15 +162,15 @@ void drawCircle1() {
 	// SE(first) = 2*xp - 2 *yp + 5 = 2 * 0 - 2 * R + 5 = 2 * R + 5
 	int deltaSE = -2 * R + 5;
 
-	// ∆«∫∞Ωƒ
+	// ÌåêÎ≥ÑÏãù
 	int D = 1 - R;
-	while (y > x) { // 2π¯¬∞ Octant±Ó¡ˆ : 1π¯¬∞ Octant∑Œ ≥—æÓ∞°∏È y > x∞° µ .
-		if (D < 0) { // Midpoint∞° ø¯ æ»¿« ¡° (E º±≈√)
-			D += deltaE; // ∆«∫∞Ωƒø° deltaE ¡ı∞°
+	while (y > x) { // 2Î≤àÏß∏ OctantÍπåÏßÄ : 1Î≤àÏß∏ OctantÎ°ú ÎÑòÏñ¥Í∞ÄÎ©¥ y > xÍ∞Ä Îê®.
+		if (D < 0) { // MidpointÍ∞Ä Ïõê ÏïàÏùò Ï†ê (E ÏÑ†ÌÉù)
+			D += deltaE; // ÌåêÎ≥ÑÏãùÏóê deltaE Ï¶ùÍ∞Ä
 			deltaE += 2; // deltaE = Ep+1 - Ep = (2*(xp+1) + 3) - (2*xp + 3) = 2xp + 2 + 3 - 2*xp - 3 = 2
 			deltaSE += 4; // deltaSE = SEp+1 - SEp = (2*xp+1 - 2*yp+1 + 5) - (2*xp - 2yp + 5) = 2*xp + 2 - 2*yp + 2 + 5 - 2*xp +2*yp - 5 = 4
 		}
-		else { // MidPoint∞° ø¯ ¿ß≥™ ø¯ π€¿« ¡° (SE º±≈√)
+		else { // MidPointÍ∞Ä Ïõê ÏúÑÎÇò Ïõê Î∞ñÏùò Ï†ê (SE ÏÑ†ÌÉù)
 			D += deltaSE; 
 			deltaE += 2;
 			deltaSE += 4;
